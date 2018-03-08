@@ -10,11 +10,11 @@ import edu.byu.broderick.fmserver.main.server.result.Result;
  */
 public class RegisterRequest extends Request {
 
-    private String userName;
+    private String username;
     private String password;
     private String email;
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
     private String gender;
 
     /**
@@ -26,11 +26,11 @@ public class RegisterRequest extends Request {
     }
 
     public RegisterRequest(String username, String password, String email, String firstname, String lastname, String gender){
-        this.userName = username;
+        this.username = username;
         this.password = password;
         this.email = email;
-        this.firstName = firstname;
-        this.lastName = lastname;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.gender = gender;
     }
 
@@ -43,13 +43,13 @@ public class RegisterRequest extends Request {
     @Override
     public Result checkRequest() {
         Result result = null;
-        if (userName == null || password == null || email == null || firstName == null || lastName == null || !(gender.equals("m") || gender.equals("f")))
+        if (username == null || password == null || email == null || firstname == null || lastname == null || !(gender.equals("m") || gender.equals("f")))
             result = new ErrorResult("Bad request");
         return result;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
@@ -60,12 +60,12 @@ public class RegisterRequest extends Request {
         return email;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getLastname() {
+        return lastname;
     }
 
     public String getGender() {

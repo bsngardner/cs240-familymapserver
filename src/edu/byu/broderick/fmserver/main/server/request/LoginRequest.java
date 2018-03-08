@@ -10,7 +10,7 @@ import edu.byu.broderick.fmserver.main.server.result.Result;
  */
 public class LoginRequest extends Request {
 
-    private String userName;
+    private String username;
 
     private String password;
 
@@ -23,7 +23,7 @@ public class LoginRequest extends Request {
     }
 
     public LoginRequest(String username, String password) {
-        this.userName = username;
+        this.username = username;
         this.password = password;
     }
 
@@ -36,13 +36,13 @@ public class LoginRequest extends Request {
     @Override
     public Result checkRequest() {
         Result result = null;
-        if(userName == null || password == null)
+        if(username == null || password == null)
             result = new ErrorResult("Bad request");
         return result;
     }
 
     public String getuserName() {
-        return userName;
+        return username;
     }
 
     public String getPassword() {

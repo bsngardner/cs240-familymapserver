@@ -39,11 +39,11 @@ public class RegisterService {
             return result;
         }
 
-        String username = request.getUserName();
+        String username = request.getUsername();
         String password = request.getPassword();
         String email = request.getEmail();
-        String firstname = request.getFirstName();
-        String lastname = request.getLastName();
+        String firstname = request.getFirstname();
+        String lastname = request.getLastname();
         String gender = request.getGender();
         User user = new User(username, password, email, firstname, lastname, gender, "", "");
 

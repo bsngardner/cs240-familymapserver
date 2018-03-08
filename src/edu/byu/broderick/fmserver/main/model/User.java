@@ -1,5 +1,7 @@
 package edu.byu.broderick.fmserver.main.model;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.time.OffsetDateTime;
 import java.util.*;
 
@@ -11,11 +13,11 @@ import java.util.*;
  */
 public class User extends DataModel {
 
-    private String userName;
+    private String username;
     private String password;
     private String email;
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
     private String gender;
     private String personID;
     private String info;
@@ -34,11 +36,11 @@ public class User extends DataModel {
      */
     public User(String username, String password, String email, String firstname, String lastname, String gender, String personid, String info) {
         super();
-        this.userName = username;
+        this.username = username;
         this.password = password;
         this.email = email;
-        this.firstName = firstname;
-        this.lastName = lastname;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.gender = gender;
         this.personID = personid;
         this.info = info;
@@ -59,11 +61,11 @@ public class User extends DataModel {
      */
     public List<Object> getEntryList() {
         List<Object> entries = new ArrayList<>();
-        entries.add(userName);
+        entries.add(username);
         entries.add(password);
         entries.add(email);
-        entries.add(firstName);
-        entries.add(lastName);
+        entries.add(firstname);
+        entries.add(lastname);
         entries.add(gender);
         entries.add(personID);
         entries.add(info);
@@ -72,7 +74,7 @@ public class User extends DataModel {
 
 
     public String getUsername() {
-        return userName;
+        return username;
     }
 
     public String getPassword() {
@@ -84,11 +86,11 @@ public class User extends DataModel {
     }
 
     public String getFirstname() {
-        return firstName;
+        return firstname;
     }
 
     public String getLastname() {
-        return lastName;
+        return lastname;
     }
 
     public String getGender() {
@@ -166,6 +168,7 @@ public class User extends DataModel {
          * @return
          */
         private static String generateNewKey() {
+
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < TOK_LEN; i++)
                 sb.append(key_dict[rand.nextInt(key_dict.length)]);

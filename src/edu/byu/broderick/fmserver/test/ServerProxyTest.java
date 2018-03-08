@@ -49,7 +49,8 @@ public class ServerProxyTest {
 
     public void register() throws Exception {
 
-        Result result = this.server.register(new RegisterRequest(username, password, email, firstname, lastname, gender));
+        RegisterRequest req = new RegisterRequest(username, password, email, firstname, lastname, gender);
+        Result result = this.server.register(req);
         assertTrue(result.getMessage() == null);
         RegisterResult regResult = (RegisterResult) result;
         assertTrue(regResult.getUserName().equals(username));

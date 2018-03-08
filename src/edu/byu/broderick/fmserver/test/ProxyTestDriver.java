@@ -9,6 +9,6 @@ public class ProxyTestDriver {
 
     public static void main(String[] args){
         server_url = args[0];
-        org.junit.runner.JUnitCore.main("ServerProxyTest");
+        org.junit.runner.JUnitCore.main("edu.byu.broderick.fmserver.test.ServerProxyTest");
     }
 }

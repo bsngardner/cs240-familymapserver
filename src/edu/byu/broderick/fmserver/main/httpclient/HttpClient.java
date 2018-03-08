@@ -85,11 +85,12 @@ public class HttpClient {
             }
 
             if (conn.getDoInput()) {
+                final int BUFFER_SIZE = 4096;
                 in = requestHandler.openInputStream(conn);
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                byte[] inData = new byte[65536];
+                byte[] inData = new byte[BUFFER_SIZE];
                 int n;
-                while ((n = in.read(inData)) != -1) {
+                while ((n = in.read(inData, 0, BUFFER_SIZE)) != -1) {
                     buffer.write(inData, 0, n);
                 }
                 buffer.flush();
