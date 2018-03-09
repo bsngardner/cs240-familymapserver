@@ -7,14 +7,12 @@ package edu.byu.broderick.fmserver.main.server.result;
  */
 public class ErrorResult extends Result {
 
-    private String message;
-
     /**
      * Constructor.
      *
      * @param s Message describing error
      */
     public ErrorResult(String s) {
-        message = s;
+        super(s);
     }
 }

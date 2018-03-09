@@ -1,7 +1,7 @@
 package edu.byu.broderick.fmserver.test;
 
 import edu.byu.broderick.fmserver.main.ServerProxy;
-import edu.byu.broderick.fmserver.main.server.JSONEncoder;
+import edu.byu.broderick.fmserver.main.server.json.JSONEncoder;
 import edu.byu.broderick.fmserver.main.server.request.*;
 import edu.byu.broderick.fmserver.main.server.result.*;
 import org.junit.After;
@@ -29,10 +29,12 @@ public class ServerProxyTest {
     @Before
     public void setUp() throws Exception {
         server = new ServerProxy(ProxyTestDriver.server_url);
+        this.server.clear(null);
     }
 
     @After
     public void tearDown() throws Exception {
+        this.server.clear(null);
         server = null;
     }
 
@@ -43,15 +45,15 @@ public class ServerProxyTest {
         fill();
         person();
         event();
-        clear();
         load();
+        clear();
     }
 
     public void register() throws Exception {
 
         RegisterRequest req = new RegisterRequest(username, password, email, firstname, lastname, gender);
         Result result = this.server.register(req);
-        assertTrue(result.getMessage() == null);
+        assertTrue(!result.isError());
         RegisterResult regResult = (RegisterResult) result;
         assertTrue(regResult.getUserName().equals(username));
         assertTrue(regResult.getPersonId() != null && !regResult.getPersonId().equals(""));
@@ -61,7 +63,7 @@ public class ServerProxyTest {
     public void login() throws Exception {
 
         Result result = this.server.login(new LoginRequest(username, password));
-        assertTrue(result.getMessage() == null);
+        assertTrue(!result.isError());
         LoginResult loginResult = (LoginResult) result;
         assertTrue(loginResult.getUserName().equals(username));
         assertTrue(loginResult.getPersonId() != null && !loginResult.getPersonId().equals(""));
@@ -70,13 +72,14 @@ public class ServerProxyTest {
 
     public void fill() throws Exception {
         Result result = this.server.fill(new FillRequest(username, 4));
-        assertTrue(result.getMessage() == null);
+        assertTrue(!result.isError());
         FillResult fillResult = (FillResult) result;
         assertTrue(fillResult.getMessage().contains("Successfully"));
     }
 
     public void clear() throws Exception {
         Result result = this.server.clear(null);
+        assertTrue(!result.isError());
         assertTrue(result.getMessage().equals("Clear succeeded."));
     }
 
@@ -85,7 +88,7 @@ public class ServerProxyTest {
         String jsonString = streamToString(new FileInputStream("data/json/example.json"));
         LoadRequest req = (LoadRequest) JSONEncoder.encoder.convertToObject(jsonString,LoadRequest.class);
         Result result = this.server.load(req);
-        assertTrue(result.getMessage() != null && result.getMessage().contains("Successfully"));
+        assertTrue(!result.isError());
         result = this.server.login(new LoginRequest("sheila","parker"));
         assertTrue(result.getMessage() == null);
         LoginResult loginResult = (LoginResult) result;
@@ -95,7 +98,7 @@ public class ServerProxyTest {
     public void person() throws Exception {
         LoginResult login = this.server.login(new LoginRequest(username,password));
         Result result = this.server.person(new PersonRequest(login.getAuthKey(),null));
-        assertTrue(result.getMessage() == null);
+        assertTrue(!result.isError());
         PersonResult personResult = (PersonResult) result;
         assertTrue(personResult instanceof PersonResult.AllPersons);
         PersonResult.AllPersons allPersons = (PersonResult.AllPersons) personResult;
@@ -105,7 +108,7 @@ public class ServerProxyTest {
     public void event() throws Exception {
         LoginResult login = this.server.login(new LoginRequest(username,password));
         Result result = this.server.event(new EventRequest(login.getAuthKey(),null));
-        assertTrue(result.getMessage() == null);
+        assertTrue(!result.isError());
         EventResult eventResult= (EventResult) result;
         assertTrue(eventResult instanceof EventResult.AllEvents);
         EventResult.AllEvents allEvents = (EventResult.AllEvents) eventResult;

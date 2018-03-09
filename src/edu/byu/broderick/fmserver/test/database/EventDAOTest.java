@@ -1,7 +1,6 @@
 package edu.byu.broderick.fmserver.test.database;
 
 import edu.byu.broderick.fmserver.main.database.Database;
-import edu.byu.broderick.fmserver.main.database.EventDAO;
 import edu.byu.broderick.fmserver.main.model.Event;
 import edu.byu.broderick.fmserver.main.model.User;
 import org.junit.After;
@@ -10,7 +9,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by broderick on 3/22/17.
@@ -18,8 +17,10 @@ import static org.junit.Assert.*;
 public class EventDAOTest {
 
     Database db;
-    User user = new User("username","password","email", "firstname", "lastname", "gender", "personid", "info");
-    Event event = new Event("eventid","username","personid",1.0,1.0,"country","city","eventType","year");
+    User user = new User("username", "password", "email", "firstname",
+            "lastname", "gender", "personid", "info");
+    Event event = new Event("eventid", "username", "personid", 1.0, 1.0,
+            "country", "city", "eventType", "year");
 
     @Before
     public void setUp() throws Exception {
@@ -39,7 +40,7 @@ public class EventDAOTest {
         db.eventData.storeNewEvent(event);
         List<Event> events = db.eventData.loadUserEvents(user);
         Event loaded_event = events.get(0);
-        assertTrue(!event.getPersonID().equals(loaded_event.getPersonID()));
+        assertTrue(event.getPersonID().equals(loaded_event.getPersonID()));
     }
 
     @Test
@@ -63,7 +64,7 @@ public class EventDAOTest {
 
     @Test
     public void loadEvent() throws Exception {
-        
+
     }
 
     @Test

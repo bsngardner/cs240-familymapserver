@@ -7,7 +7,7 @@ package edu.byu.broderick.fmserver.main.server.result;
  */
 public class ClearResult extends Result {
 
-    private String message = "Clear succeeded.";
+    private static final String SUCCESS_STRING = "Clear succeeded.";
 
     /**
      * Constructor
@@ -15,6 +15,12 @@ public class ClearResult extends Result {
      *
      */
     public ClearResult() {
-        super();
+        super(SUCCESS_STRING);
     }
+
+    @Override
+    public boolean isError(){
+        return !this.message.equals(SUCCESS_STRING);
+    }
+
 }

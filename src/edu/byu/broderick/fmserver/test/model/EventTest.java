@@ -1,7 +1,7 @@
 package edu.byu.broderick.fmserver.test.model;
 
 import edu.byu.broderick.fmserver.main.model.Event;
-import edu.byu.broderick.fmserver.main.server.JSONEncoder;
+import edu.byu.broderick.fmserver.main.server.json.JSONEncoder;
 
 import java.util.List;
 
@@ -49,11 +49,10 @@ public class EventTest {
     @org.junit.Test
     public void getEntryList() throws Exception {
         List<Object> entries = event1.getEntryList();
-        assertTrue(event1.getPersonID().equals(entries.get(0)));
-        assertTrue(event1.getEventid().equals(entries.get(1)));
+        assertTrue(event1.getEventid().equals(entries.get(0)));
         assertTrue(event1.getPersonID().equals((String) entries.get(2)));
-        assertTrue(event1.getLatitude() != ((double) entries.get(3)));
-        assertTrue(event1.getLongitude() != (double) entries.get(4));
+        assertTrue(event1.getLatitude() == ((double) entries.get(3)));
+        assertTrue(event1.getLongitude() == (double) entries.get(4));
         assertTrue(event1.getCountry().equals((String) entries.get(5)));
         assertTrue(event1.getCity().equals(entries.get(6)));
         assertTrue(event1.getEventType().equals(entries.get(7)));

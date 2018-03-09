@@ -1,11 +1,21 @@
 package edu.byu.broderick.fmserver.main;
 
-import edu.byu.broderick.fmserver.main.server.JSONEncoder;
+import edu.byu.broderick.fmserver.main.server.json.JSONEncoder;
 import edu.byu.broderick.fmserver.main.server.request.*;
 import edu.byu.broderick.fmserver.main.server.result.*;
-import edu.byu.broderick.fmserver.main.httpclient.HttpClient;
-import edu.byu.broderick.fmserver.main.httpclient.HttpResponse;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -19,14 +29,19 @@ public class ServerProxy {
     private static final String JSON_TYPE = "application/json";
     private static final Charset UTF8 = StandardCharsets.UTF_8;
 
-    HttpClient client;
+    URL url;
+
     JSONEncoder enc;
 
     /**
      * Constructor
      */
     public ServerProxy(String serverURL) {
-        client = new HttpClient(serverURL);
+        try {
+            url = new URL(serverURL);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         enc = new JSONEncoder();
     }
 
@@ -38,9 +53,9 @@ public class ServerProxy {
      * @return
      */
     public RegisterResult register(RegisterRequest request) {
-        String json = enc.convertToJSON(request);
-        HttpResponse response = client.doPost("/user/register", JSON_TYPE, json.getBytes());
-        RegisterResult result = (RegisterResult) enc.convertToObject(new String(response.getBody(), UTF8), RegisterResult.class);
+        String body = enc.convertToJSON(request);
+        String response = executeServerPost("/user/register", body);
+        RegisterResult result = (RegisterResult) enc.convertToObject(response, RegisterResult.class);
         return result;
     }
 
@@ -51,9 +66,9 @@ public class ServerProxy {
      * @return
      */
     public LoginResult login(LoginRequest request) {
-        String json = enc.convertToJSON(request);
-        HttpResponse response = client.doPost("/user/login", JSON_TYPE, json.getBytes());
-        LoginResult result = (LoginResult) enc.convertToObject(new String(response.getBody(), UTF8), LoginResult.class);
+        String body = enc.convertToJSON(request);
+        String response = executeServerPost("/user/login", body);
+        LoginResult result = (LoginResult) enc.convertToObject(response, LoginResult.class);
         return result;
     }
 
@@ -65,8 +80,8 @@ public class ServerProxy {
      * @return
      */
     public ClearResult clear(ClearRequest request) {
-        HttpResponse response = client.doPost("/clear", null, null);
-        ClearResult result = (ClearResult) enc.convertToObject(new String(response.getBody(), UTF8), ClearResult.class);
+        String response = executeServerPost("/clear", null);
+        ClearResult result = (ClearResult) enc.convertToObject(response, ClearResult.class);
         return result;
     }
 
@@ -82,12 +97,12 @@ public class ServerProxy {
      * @return
      */
     public FillResult fill(FillRequest request) {
-        String path = "/event/" + request.getUsername();
+        String path = "/fill/" + request.getUsername();
         if (request.getGenerations() >= 0) {
             path += "/" + request.getGenerations();
         }
-        HttpResponse response = client.doPost(path, null, null);
-        FillResult result = (FillResult) enc.convertToObject(new String(response.getBody(), UTF8), FillResult.class);
+        String response = executeServerPost(path, null);
+        FillResult result = (FillResult) enc.convertToObject(response, FillResult.class);
         return result;
     }
 
@@ -99,9 +114,9 @@ public class ServerProxy {
      * @return
      */
     public LoadResult load(LoadRequest request) {
-        String json = enc.convertToJSON(request);
-        HttpResponse response = client.doPost("/load", JSON_TYPE, json.getBytes());
-        LoadResult result = (LoadResult) enc.convertToObject(new String(response.getBody(), UTF8), LoadResult.class);
+        String body = enc.convertToJSON(request);
+        String response = executeServerPost("/load", body);
+        LoadResult result = (LoadResult) enc.convertToObject(response, LoadResult.class);
         return result;
     }
 
@@ -122,10 +137,9 @@ public class ServerProxy {
             path += "/" + request.getPersonid();
         }
         String authKey = request.getAuthKey();
-        client.clearHeaders();
-        client.addHeader("Authorization", authKey);
-        HttpResponse response = client.doGet(path, null, null);
-        return null;
+        String response = executeServerGet(path, authKey);
+        PersonResult result = (PersonResult) enc.convertToObject(response, PersonResult.class);
+        return result;
     }
 
     /**
@@ -145,10 +159,71 @@ public class ServerProxy {
             path += "/" + request.getEventid();
         }
         String authKey = request.getAuthKey();
-        client.clearHeaders();
-        client.addHeader("Authorization", authKey);
-        HttpResponse response = client.doGet(path, null, null);
-        return null;
+        String response = executeServerGet(path, authKey);
+        EventResult result = (EventResult) enc.convertToObject(response, EventResult.class);
+        return result;
     }
+
+    private String executeServerGet(String path, String authkey){
+        String response = null;
+
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
+
+            HttpGet get = new HttpGet(new URL(url, path).toURI());
+            if(authkey != null) {
+                get.setHeader("Authorization", authkey);
+            }
+
+            ResponseHandler<String> responseHandler = response1 -> {
+                //int status = response.getStatusLine().getStatusCode();
+                HttpEntity entity = response1.getEntity();
+                return (entity != null) ? (EntityUtils.toString(entity)) : (null);
+            };
+
+            response = client.execute(get, responseHandler);
+
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+
+    private String executeServerPost(String path, String body){
+        String response = null;
+
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
+
+            HttpPost post = new HttpPost(new URL(url, path).toURI());
+            if(body != null) {
+                StringEntity postBody = new StringEntity(body, Charset.defaultCharset());
+                post.setEntity(postBody);
+            }
+
+            ResponseHandler<String> responseHandler = response1 -> {
+                //int status = response.getStatusLine().getStatusCode();
+                HttpEntity entity = response1.getEntity();
+                return (entity != null) ? (EntityUtils.toString(entity)) : (null);
+            };
+
+            response = client.execute(post, responseHandler);
+
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+
 
 }

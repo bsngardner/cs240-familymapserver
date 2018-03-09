@@ -5,8 +5,12 @@ package edu.byu.broderick.fmserver.test;
  */
 public class TestDriver {
 
-    public static void main(String[] args){
-        org.junit.runner.JUnitCore.main("database.EventDAOTest","database.PersonDAOTest","database.UserDAOTest",
-                "model.EventTest","model.PersonTest","model.UserTest");
+    public static void main(String[] args) {
+        org.junit.runner.JUnitCore.main("edu.byu.broderick.fmserver.test.database.EventDAOTest",
+                "edu.byu.broderick.fmserver.test.database.PersonDAOTest",
+                "edu.byu.broderick.fmserver.test.database.UserDAOTest",
+                "edu.byu.broderick.fmserver.test.model.EventTest",
+                "edu.byu.broderick.fmserver.test.model.PersonTest",
+                "edu.byu.broderick.fmserver.test.model.UserTest");
     }
 }

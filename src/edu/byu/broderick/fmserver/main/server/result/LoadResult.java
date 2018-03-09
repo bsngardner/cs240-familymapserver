@@ -7,8 +7,6 @@ package edu.byu.broderick.fmserver.main.server.result;
  */
 public class LoadResult extends Result {
 
-    private String message;
-
     /**
      * Constructor
      */
@@ -23,5 +21,10 @@ public class LoadResult extends Result {
         b.append(numEvents);
         b.append(" events to the database.");
         this.message = b.toString();
+    }
+
+    @Override
+    public boolean isError(){
+        return !this.message.contains("Successfully");
     }
 }
