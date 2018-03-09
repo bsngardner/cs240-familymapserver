@@ -138,7 +138,7 @@ public class EventDAOTest {
     @Test
     public void deleteEvents() throws Exception {
         fillDatabase();
-        
+
     }
 
 }

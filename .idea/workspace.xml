@@ -6,28 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e1d84606-7ebe-4883-ae3a-7e330215c9df" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/main/server/serialize/ISerialEncoder.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/main/server/serialize/SerialCodec.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/database.sqlite" afterPath="$PROJECT_DIR$/db/database.sqlite" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/com_google_code_gson_gson_2_8_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/com_google_code_gson_gson_2_8_2.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/org_apache_httpcomponents_httpclient_4_5_5.xml" afterPath="$PROJECT_DIR$/.idea/libraries/org_apache_httpcomponents_httpclient_4_5_5.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/org_xerial_sqlite_jdbc_3_21_0_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/org_xerial_sqlite_jdbc_3_21_0_1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/javadoc/edu/byu/broderick/fmserver/main/server/JSONEncoder.html" afterPath="$PROJECT_DIR$/javadoc/edu/byu/broderick/fmserver/main/server/JSONEncoder.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/javadoc/edu/byu/broderick/fmserver/server/JSONEncoder.html" afterPath="$PROJECT_DIR$/javadoc/edu/byu/broderick/fmserver/server/JSONEncoder.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/main/ServerProxy.java" afterPath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/main/ServerProxy.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/main/model/Person.java" afterPath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/main/model/Person.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/main/server/Handlers.java" afterPath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/main/server/Handlers.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/main/server/service/FillService.java" afterPath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/main/server/service/FillService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/test/ServerProxyTest.java" afterPath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/test/ServerProxyTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/test/TestDriver.java" afterPath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/test/TestDriver.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/test/database/EventDAOTest.java" afterPath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/test/database/EventDAOTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/test/model/EventTest.java" afterPath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/test/model/EventTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/test/model/PersonTest.java" afterPath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/test/model/PersonTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/test/model/UserTest.java" afterPath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/test/model/UserTest.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/main/server/json/JSONEncoder.java" afterPath="$PROJECT_DIR$/src/edu/byu/broderick/fmserver/main/server/serialize/JSONEncoder.java" />
-    </list>
+    <list default="true" id="e1d84606-7ebe-4883-ae3a-7e330215c9df" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -80,8 +59,8 @@
           <file leaf-file-name="EventDAOTest.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/edu/byu/broderick/fmserver/test/database/EventDAOTest.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1006">
-                  <caret line="140" column="8" lean-forward="false" selection-start-line="140" selection-start-column="8" selection-end-line="140" selection-end-column="8" />
+                <state relative-caret-position="918">
+                  <caret line="136" column="0" lean-forward="true" selection-start-line="136" selection-start-column="0" selection-end-line="136" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -1354,8 +1333,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/edu/byu/broderick/fmserver/test/database/EventDAOTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1006">
-          <caret line="140" column="8" lean-forward="false" selection-start-line="140" selection-start-column="8" selection-end-line="140" selection-end-column="8" />
+        <state relative-caret-position="918">
+          <caret line="136" column="0" lean-forward="true" selection-start-line="136" selection-start-column="0" selection-end-line="136" selection-end-column="0" />
           <folding />
         </state>
       </provider>
