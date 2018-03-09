@@ -59,6 +59,11 @@ public class Person extends DataModel {
     }
 
 
+    /**
+     * Returns all fields in an ordered list
+     *
+     * @return
+     */
     public List<Object> getEntryList() {
         List<Object> entries = new ArrayList<Object>();
         entries.add(personID);
@@ -136,6 +141,16 @@ public class Person extends DataModel {
 
     public void setSpouse(String spouse) {
         this.spouse = spouse;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (o == null)
+                return false;
+        if(!(o instanceof Person))
+            return false;
+        Person p = (Person) o;
+        return p.getEntryList().equals(this.getEntryList());
     }
 
 

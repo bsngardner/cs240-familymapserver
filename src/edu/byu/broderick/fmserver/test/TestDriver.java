@@ -1,7 +1,9 @@
 package edu.byu.broderick.fmserver.test;
 
 /**
- * Created by broderick on 4/6/17.
+ * Test driver for all local unit tests (no HTTP server calls)
+ *
+ * @author Broderick Gardner
  */
 public class TestDriver {
 

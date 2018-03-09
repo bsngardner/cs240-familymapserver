@@ -1,4 +1,4 @@
-package edu.byu.broderick.fmserver.main.server.json;
+package edu.byu.broderick.fmserver.main.server.serialize;
 
 import com.google.gson.*;
 import edu.byu.broderick.fmserver.main.server.result.EventResult;
@@ -11,14 +11,20 @@ import java.lang.reflect.Type;
  *
  * @author Broderick Gardner
  */
-public class JSONEncoder {
+public enum JSONEncoder implements ISerialEncoder{
+    inst();
 
+    Gson gson;
 
     /**
-     * Singleton instance of JSONEncoder
+     * Constructor
      */
-    public static JSONEncoder encoder = new JSONEncoder();
-    Gson gson;
+    JSONEncoder() {
+        GsonBuilder gsonBuilder = new GsonBuilder().disableHtmlEscaping();
+        gsonBuilder.registerTypeAdapter(PersonResult.class, personDecoder);
+        gsonBuilder.registerTypeAdapter(EventResult.class, eventDecoder);
+        gson = gsonBuilder.create();
+    }
 
     //Custom deserializer for person, detects whether the JSON is a single person or multiple
     private JsonDeserializer<PersonResult> personDecoder = (json, typeOfT, context) -> {
@@ -26,7 +32,7 @@ public class JSONEncoder {
 
         JsonElement dataField = jsonObject.get("data");
 
-        PersonResult result = null;
+        PersonResult result;
 
         if (dataField != null) {
             result = context.deserialize(json, PersonResult.AllPersons.class);
@@ -55,23 +61,28 @@ public class JSONEncoder {
     };
 
     /**
-     * Constructor
+     * Serialize the object to a string
+     *
+     * @param data Object with type among the data model classes
+     * @return Returns the serialized string
      */
-    public JSONEncoder() {
-        GsonBuilder gsonBuilder = new GsonBuilder().disableHtmlEscaping();
-        gsonBuilder.registerTypeAdapter(PersonResult.class, personDecoder);
-        gsonBuilder.registerTypeAdapter(EventResult.class, eventDecoder);
-        gson = gsonBuilder.create();
+    @Override
+    public String serialize(Object data) {
+        return gson.toJson(data);
     }
 
-    public String convertToJSON(Object obj) {
-        return gson.toJson(obj);
-    }
-
-    public Object convertToObject(String json, Type type) {
+    /**
+     * Deserialize the data back to an object
+     *
+     * @param str String data to be converted to an object
+     * @param type Model object type that will be returned
+     * @return Object is of class 'type'
+     */
+    @Override
+    public Object deserialize(String str, Type type) {
         Object obj = null;
         try {
-            obj = gson.fromJson(json, type);
+            obj = gson.fromJson(str, type);
         } catch (JsonSyntaxException e) {
             System.out.print("JSON error: failed to convert to Object: ");
             System.out.println(type);
@@ -79,5 +90,4 @@ public class JSONEncoder {
         }
         return obj;
     }
-
 }

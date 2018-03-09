@@ -1,7 +1,7 @@
 package edu.byu.broderick.fmserver.test;
 
 import edu.byu.broderick.fmserver.main.ServerProxy;
-import edu.byu.broderick.fmserver.main.server.json.JSONEncoder;
+import edu.byu.broderick.fmserver.main.server.serialize.JSONEncoder;
 import edu.byu.broderick.fmserver.main.server.request.*;
 import edu.byu.broderick.fmserver.main.server.result.*;
 import org.junit.After;
@@ -85,7 +85,7 @@ public class ServerProxyTest {
 
     public void load() throws Exception {
 
-        String jsonString = streamToString(new FileInputStream("data/json/example.json"));
+        String jsonString = streamToString(new FileInputStream("data/serialize/example.serialize"));
         LoadRequest req = (LoadRequest) JSONEncoder.encoder.convertToObject(jsonString,LoadRequest.class);
         Result result = this.server.load(req);
         assertTrue(!result.isError());

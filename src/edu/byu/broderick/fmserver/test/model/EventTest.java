@@ -1,7 +1,8 @@
 package edu.byu.broderick.fmserver.test.model;
 
 import edu.byu.broderick.fmserver.main.model.Event;
-import edu.byu.broderick.fmserver.main.server.json.JSONEncoder;
+import edu.byu.broderick.fmserver.main.server.serialize.JSONEncoder;
+import edu.byu.broderick.fmserver.main.server.serialize.SerialCodec;
 
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class EventTest {
 
     @org.junit.Test
     public void EventTest() throws Exception {
-        Event local = (Event) JSONEncoder.encoder.convertToObject(event_json, Event.class);
+        Event local = (Event) SerialCodec.inst.deserialize(event_json, Event.class);
         assertTrue(local.equals(event1));
     }
 

@@ -1,6 +1,6 @@
 package edu.byu.broderick.fmserver.main;
 
-import edu.byu.broderick.fmserver.main.server.json.JSONEncoder;
+import edu.byu.broderick.fmserver.main.server.serialize.JSONEncoder;
 import edu.byu.broderick.fmserver.main.server.request.*;
 import edu.byu.broderick.fmserver.main.server.result.*;
 import org.apache.http.HttpEntity;
@@ -26,7 +26,7 @@ import java.nio.charset.StandardCharsets;
  */
 public class ServerProxy {
 
-    private static final String JSON_TYPE = "application/json";
+    private static final String JSON_TYPE = "application/serialize";
     private static final Charset UTF8 = StandardCharsets.UTF_8;
 
     URL url;
