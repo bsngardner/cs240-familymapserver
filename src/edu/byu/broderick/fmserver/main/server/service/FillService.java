@@ -130,7 +130,7 @@ public class FillService {
      */
     public void fillUser(User user, int generations) {
 
-        String username = user.getUsername();
+        String username = user.getUserName();
         String firstname = user.getFirstname();
         String lastname = user.getLastname();
         String gender = user.getGender();

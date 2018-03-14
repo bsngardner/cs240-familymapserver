@@ -40,7 +40,7 @@ public class LoginRequest extends Request {
         return result;
     }
 
-    public String getuserName() {
+    public String getUserName() {
         return userName;
     }
 

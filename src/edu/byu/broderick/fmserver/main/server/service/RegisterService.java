@@ -57,7 +57,7 @@ public class RegisterService {
         User.AuthToken key = db.userData.authenticateUser(user);
         Services.fillService.fillUser(user, 4);
 
-        result = new RegisterResult(key.key(), user.getUsername(), user.getPersonID());
+        result = new RegisterResult(key.key(), user.getUserName(), user.getPersonID());
         System.out.println("Command successful");
         return result;
     }
