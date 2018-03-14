@@ -49,6 +49,10 @@ div {
   margin:0;
 }
 
+ul {
+  padding-right: 15px;
+}
+
 /*
  * Remove text-shadow in selection highlight:
  * https://twitter.com/miketaylr/status/12228805301
