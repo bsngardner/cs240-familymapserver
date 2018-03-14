@@ -14,10 +14,8 @@ public class PersonDAO {
 
     private static final String PERSON_TABLE = "main.persons";
     private static final List<String> PERSON_COLUMNS = Arrays.asList("personid", "userid", "firstname", "lastname", "gender", "father", "mother", "spouse");
-
-    private Set<String> uids = null;
-
     private final Database db;
+    private Set<String> uids = null;
 
     /**
      * Constructor.

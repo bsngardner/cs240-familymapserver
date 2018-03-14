@@ -2,14 +2,13 @@ package edu.byu.broderick.fmserver.main.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Data model class containing information about an Event
  *
  * @author Broderick Gardner
  */
-public class Event extends DataModel{
+public class Event extends DataModel {
 
     private String eventID;
     private String descendant;
@@ -72,7 +71,7 @@ public class Event extends DataModel{
      *
      * @param e
      */
-    public Event(Event e){
+    public Event(Event e) {
         super();
         this.eventID = e.eventID;
         this.descendant = e.descendant;
@@ -84,7 +83,6 @@ public class Event extends DataModel{
         this.eventType = e.eventType;
         this.year = e.year;
     }
-
 
 
     public List<Object> getEntryList() {
@@ -104,6 +102,10 @@ public class Event extends DataModel{
 
     public String getEventid() {
         return eventID;
+    }
+
+    public void setEventid(String eventid) {
+        this.eventID = eventid;
     }
 
     public String getUsername() {
@@ -138,10 +140,6 @@ public class Event extends DataModel{
         return year;
     }
 
-    public void setEventid(String eventid) {
-        this.eventID = eventid;
-    }
-
     private void calculateHashCode() {
         int result;
         long temp;
@@ -161,7 +159,7 @@ public class Event extends DataModel{
 
     @Override
     public int hashCode() {
-        if(!hasHash) {
+        if (!hasHash) {
             calculateHashCode();
             hasHash = true;
         }

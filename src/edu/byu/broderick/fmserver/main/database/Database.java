@@ -13,6 +13,10 @@ import java.util.*;
  */
 public class Database {
 
+    /**
+     * Singleton object of Database
+     */
+    private static Database db = new Database();
     private final String CREATE_USERS_TABLE = "CREATE TABLE IF NOT EXISTS " +
             "        main.users (" +
             "          username TEXT PRIMARY KEY NOT NULL UNIQUE, " +
@@ -25,7 +29,6 @@ public class Database {
             "          info TEXT NOT NULL" +
             "                   );";
     private final String DROP_USERS_TABLE = "DROP TABLE IF EXISTS main.users";
-
     private final String CREATE_AUTHKEYS_TABLE = "CREATE TABLE IF NOT EXISTS \n" +
             "        main.authKeys (\n" +
             "          key TEXT PRIMARY KEY NOT NULL UNIQUE,\n" +
@@ -33,7 +36,6 @@ public class Database {
             "          time TEXT NOT NULL\n" +
             "                   );";
     private final String DROP_AUTHKEYS_TABLE = "DROP TABLE IF EXISTS main.authkeys";
-
     private final String CREATE_PERSONS_TABLE = "CREATE TABLE IF NOT EXISTS \n" +
             "        main.persons (\n" +
             "          personid varchar(20),\n" +
@@ -46,7 +48,6 @@ public class Database {
             "          spouse TEXT\n" +
             "                      );";
     private final String DROP_PERSONS_TABLE = "DROP TABLE IF EXISTS main.persons";
-
     private final String CREATE_EVENTS_TABLE = "CREATE TABLE IF NOT EXISTS \n" +
             "        main.events (\n" +
             "          eventid varchar(20),\n" +
@@ -60,29 +61,30 @@ public class Database {
             "          year TEXT NOT NULL\n" +
             "                   );";
     private final String DROP_EVENTS_TABLE = "DROP TABLE IF EXISTS main.events";
-
-    /**
-     * Singleton object of Database
-     */
-    private static Database db = new Database();
-
     public Connection conn;
 
     public UserDAO userData = new UserDAO(this);
     public EventDAO eventData = new EventDAO(this);
     public PersonDAO personData = new PersonDAO(this);
-
-    private Random rand = new Random();
-
-    private String sql_cmd;
     PreparedStatement stmt = null;
     ResultSet rs = null;
+    private Random rand = new Random();
+    private String sql_cmd;
 
     /**
      * Constructor
      */
     public Database() {
         loadDriver();
+    }
+
+    /**
+     * Getter for singleton object
+     *
+     * @return
+     */
+    public static Database getDB() {
+        return db;
     }
 
     /**
@@ -339,7 +341,6 @@ public class Database {
         }
     }
 
-
     /**
      * Open connection to database
      * Called by startTransaction
@@ -407,19 +408,9 @@ public class Database {
         endTransaction(true);
     }
 
-
-    /**
-     * Getter for singleton object
-     *
-     * @return
-     */
-    public static Database getDB() {
-        return db;
-    }
-
-
     /**
      * Generate random alphanumeric id, uses for event and person id's
+     *
      * @return
      */
     public String generateID() {

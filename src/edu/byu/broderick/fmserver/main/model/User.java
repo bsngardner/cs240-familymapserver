@@ -3,7 +3,10 @@ package edu.byu.broderick.fmserver.main.model;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Data model class for a registered User
@@ -105,12 +108,12 @@ public class User extends DataModel {
         return personID;
     }
 
-    public String getInfo() {
-        return info;
-    }
-
     public void setPersonID(String personid) {
         this.personID = personid;
+    }
+
+    public String getInfo() {
+        return info;
     }
 
     public void setInfo(String info) {
@@ -165,10 +168,9 @@ public class User extends DataModel {
         private static final int TOK_LEN = 16;
         private static final char[] key_dict = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
         private static Random rand = new Random();
-
-        private String key;
         OffsetDateTime time;
         String username;
+        private String key;
 
         /**
          * Constructor
@@ -194,17 +196,6 @@ public class User extends DataModel {
         }
 
         /**
-         * Check if token is expired by comparing timestamp with current time.  1 hour expiration
-         *
-         * @return
-         */
-        public boolean isExpired() {
-            OffsetDateTime t = OffsetDateTime.now();
-            t = t.minusHours(1);
-            return this.time.isBefore(t);
-        }
-
-        /**
          * Private helper method for generating a new key for the token
          *
          * @return
@@ -214,6 +205,17 @@ public class User extends DataModel {
             BigInteger key = new BigInteger(NUM_BITS, new SecureRandom());
             String keyString = new String(Base64.getEncoder().encode(key.toByteArray()));
             return keyString;
+        }
+
+        /**
+         * Check if token is expired by comparing timestamp with current time.  1 hour expiration
+         *
+         * @return
+         */
+        public boolean isExpired() {
+            OffsetDateTime t = OffsetDateTime.now();
+            t = t.minusHours(1);
+            return this.time.isBefore(t);
         }
 
         /**

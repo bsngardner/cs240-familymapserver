@@ -13,7 +13,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by broderick on 3/22/17.
@@ -117,12 +118,12 @@ public class PersonDAOTest {
 
     @Test
     public void updatePerson() throws Exception {
-         fillDatabase();
-         Person p = new Person(personA);
-         p.setFirstname("jelly");
-         db.personData.updatePerson(p);
-         p = db.personData.loadPerson(user1, personA.getPersonID());
-         assertTrue(p.getFirstname().equals("jelly"));
+        fillDatabase();
+        Person p = new Person(personA);
+        p.setFirstname("jelly");
+        db.personData.updatePerson(p);
+        p = db.personData.loadPerson(user1, personA.getPersonID());
+        assertTrue(p.getFirstname().equals("jelly"));
     }
 
     @Test

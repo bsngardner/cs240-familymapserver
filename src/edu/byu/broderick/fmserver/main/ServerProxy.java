@@ -1,8 +1,8 @@
 package edu.byu.broderick.fmserver.main;
 
-import edu.byu.broderick.fmserver.main.server.serialize.JSONEncoder;
 import edu.byu.broderick.fmserver.main.server.request.*;
 import edu.byu.broderick.fmserver.main.server.result.*;
+import edu.byu.broderick.fmserver.main.server.serialize.JSONEncoder;
 import edu.byu.broderick.fmserver.main.server.serialize.SerialCodec;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ResponseHandler;
@@ -164,13 +164,13 @@ public class ServerProxy {
         return result;
     }
 
-    private String executeServerGet(String path, String authkey){
+    private String executeServerGet(String path, String authkey) {
         String response = null;
 
         try (CloseableHttpClient client = HttpClients.createDefault()) {
 
             HttpGet get = new HttpGet(new URL(url, path).toURI());
-            if(authkey != null) {
+            if (authkey != null) {
                 get.setHeader("Authorization", authkey);
             }
 
@@ -194,13 +194,13 @@ public class ServerProxy {
         return response;
     }
 
-    private String executeServerPost(String path, String body){
+    private String executeServerPost(String path, String body) {
         String response = null;
 
         try (CloseableHttpClient client = HttpClients.createDefault()) {
 
             HttpPost post = new HttpPost(new URL(url, path).toURI());
-            if(body != null) {
+            if (body != null) {
                 StringEntity postBody = new StringEntity(body, Charset.defaultCharset());
                 post.setEntity(postBody);
             }

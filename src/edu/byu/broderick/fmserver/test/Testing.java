@@ -6,7 +6,7 @@ import java.util.Base64;
 
 public class Testing {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         final int NUM_BITS = 32;
         BigInteger key = new BigInteger(NUM_BITS, new SecureRandom());
         String keyString = new String(Base64.getEncoder().encode(key.toByteArray()));

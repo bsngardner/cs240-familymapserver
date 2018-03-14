@@ -8,7 +8,7 @@ import org.junit.Before;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit test for the Person model class
@@ -17,11 +17,11 @@ import static org.junit.Assert.*;
  */
 public class PersonTest {
 
-    private Person person = null;
     private final String person_json = JSONEncoder.inst.serialize(
             new Person("AAAAAAAA", "testuser",
                     "G", "Money", "m",
                     "BBBBBBBB", "CCCCCCCC", "DDDDDDDD"));
+    private Person person = null;
 
     @Before
     public void setUp() throws Exception {
@@ -44,7 +44,7 @@ public class PersonTest {
 
     /**
      * Check the order of fields in the entry list by comparing via order in the list and
-     *  the getters
+     * the getters
      *
      * @throws Exception
      */

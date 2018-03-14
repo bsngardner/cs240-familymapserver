@@ -20,7 +20,7 @@ public interface ISerialEncoder {
     /**
      * Deserialize the data back to an object
      *
-     * @param str String data to be converted to an object
+     * @param str  String data to be converted to an object
      * @param type Model object type that will be returned
      * @return Object is of class 'type'
      */
