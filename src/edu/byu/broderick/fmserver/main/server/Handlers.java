@@ -1,13 +1,12 @@
 package edu.byu.broderick.fmserver.main.server;
 
-import edu.byu.broderick.fmserver.main.server.serialize.SerialCodec;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 import edu.byu.broderick.fmserver.main.server.request.*;
 import edu.byu.broderick.fmserver.main.server.result.ErrorResult;
 import edu.byu.broderick.fmserver.main.server.result.Result;
+import edu.byu.broderick.fmserver.main.server.serialize.SerialCodec;
 import edu.byu.broderick.fmserver.main.server.service.Services;
-
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpExchange;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -50,7 +49,7 @@ public class Handlers {
         String body = streamToString(httpExchange.getRequestBody());
         RegisterRequest req = (RegisterRequest) SerialCodec.inst.deserialize(body, RegisterRequest.class);
         if (req == null) {
-            sendErrorResponse(httpExchange,"Invalid register request");
+            sendErrorResponse(httpExchange, "Invalid register request");
         } else {
             Result result = Services.registerService.service(req);
 
@@ -66,7 +65,7 @@ public class Handlers {
         String body = streamToString(httpExchange.getRequestBody());
         LoginRequest req = (LoginRequest) SerialCodec.inst.deserialize(body, LoginRequest.class);
         if (req == null) {
-            sendErrorResponse(httpExchange,"Invalid Login Request");
+            sendErrorResponse(httpExchange, "Invalid Login Request");
         } else {
             Result result = Services.loginService.login(req);
 
@@ -93,7 +92,7 @@ public class Handlers {
         String cmd = httpExchange.getRequestURI().toString();
         String[] params = cmd.split("/");
         if (params.length < 3 || params.length > 4) {
-            sendErrorResponse(httpExchange,"Invalid fill URI");
+            sendErrorResponse(httpExchange, "Invalid fill URI");
             return;
         }
         int generations = (params.length == 4) ? Integer.parseInt(params[3]) : 4;
@@ -112,7 +111,7 @@ public class Handlers {
         String body = streamToString(httpExchange.getRequestBody());
         LoadRequest req = (LoadRequest) SerialCodec.inst.deserialize(body, LoadRequest.class);
         if (req == null) {
-            sendErrorResponse(httpExchange,"Invalid load request");
+            sendErrorResponse(httpExchange, "Invalid load request");
         } else {
             System.out.println("Handling load request");
             Result result = Services.loadService.service(req);
@@ -131,7 +130,7 @@ public class Handlers {
         String cmd = httpExchange.getRequestURI().toString();
         String[] params = cmd.split("/");
         if (params.length < 2 || params.length > 3) {
-            sendErrorResponse(httpExchange,"Invalid event URI");
+            sendErrorResponse(httpExchange, "Invalid event URI");
             return;
         }
         String eventid = (params.length == 3) ? params[2] : null;
@@ -150,7 +149,7 @@ public class Handlers {
         String cmd = httpExchange.getRequestURI().toString();
         String[] params = cmd.split("/");
         if (params.length < 2 || params.length > 3) {
-            sendErrorResponse(httpExchange,"Invalid person URI");
+            sendErrorResponse(httpExchange, "Invalid person URI");
             return;
         }
         String personid = (params.length == 3) ? params[2] : null;
@@ -173,7 +172,7 @@ public class Handlers {
      * @param response
      */
     private void sendResponse(HttpExchange httpExchange, String response) {
-        try (OutputStreamWriter writer = new OutputStreamWriter(httpExchange.getResponseBody(), Charset.forName("UTF-8"))){
+        try (OutputStreamWriter writer = new OutputStreamWriter(httpExchange.getResponseBody(), Charset.forName("UTF-8"))) {
             httpExchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
             //httpExchange.setStatus(HttpURLConnection.HTTP_OK);
             writer.write(response);
@@ -183,7 +182,7 @@ public class Handlers {
         }
     }
 
-    private void sendErrorResponse(HttpExchange httpExchange, String msg){
+    private void sendErrorResponse(HttpExchange httpExchange, String msg) {
         Result result = new ErrorResult(msg);
         String response = SerialCodec.inst.serialize(result);
         sendResponse(httpExchange, response);

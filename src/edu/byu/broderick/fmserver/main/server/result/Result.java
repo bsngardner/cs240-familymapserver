@@ -17,11 +17,11 @@ public abstract class Result {
         message = null;
     }
 
-    public Result(String msg){
+    public Result(String msg) {
         this.message = msg;
     }
 
-    public String getMessage(){
+    public String getMessage() {
         return message;
     }
 
@@ -31,7 +31,7 @@ public abstract class Result {
      *
      * @return
      */
-    public boolean isError(){
+    public boolean isError() {
         return (this instanceof ErrorResult) || this.message != null;
     }
 

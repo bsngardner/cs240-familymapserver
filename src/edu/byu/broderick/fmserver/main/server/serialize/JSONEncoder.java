@@ -11,21 +11,10 @@ import java.lang.reflect.Type;
  *
  * @author Broderick Gardner
  */
-public enum JSONEncoder implements ISerialEncoder{
+public enum JSONEncoder implements ISerialEncoder {
     inst();
 
     Gson gson;
-
-    /**
-     * Constructor
-     */
-    JSONEncoder() {
-        GsonBuilder gsonBuilder = new GsonBuilder().disableHtmlEscaping();
-        gsonBuilder.registerTypeAdapter(PersonResult.class, personDecoder);
-        gsonBuilder.registerTypeAdapter(EventResult.class, eventDecoder);
-        gson = gsonBuilder.create();
-    }
-
     //Custom deserializer for person, detects whether the JSON is a single person or multiple
     private JsonDeserializer<PersonResult> personDecoder = (json, typeOfT, context) -> {
         JsonObject jsonObject = json.getAsJsonObject();
@@ -42,7 +31,6 @@ public enum JSONEncoder implements ISerialEncoder{
 
         return result;
     };
-
     //Custom deserializer for event, detects whether the JSON is a single event or multiple
     private JsonDeserializer<EventResult> eventDecoder = (json, typeOfT, context) -> {
         JsonObject jsonObject = json.getAsJsonObject();
@@ -61,6 +49,16 @@ public enum JSONEncoder implements ISerialEncoder{
     };
 
     /**
+     * Constructor
+     */
+    JSONEncoder() {
+        GsonBuilder gsonBuilder = new GsonBuilder().disableHtmlEscaping();
+        gsonBuilder.registerTypeAdapter(PersonResult.class, personDecoder);
+        gsonBuilder.registerTypeAdapter(EventResult.class, eventDecoder);
+        gson = gsonBuilder.create();
+    }
+
+    /**
      * Serialize the object to a string
      *
      * @param data Object with type among the data model classes
@@ -74,7 +72,7 @@ public enum JSONEncoder implements ISerialEncoder{
     /**
      * Deserialize the data back to an object
      *
-     * @param str String data to be converted to an object
+     * @param str  String data to be converted to an object
      * @param type Model object type that will be returned
      * @return Object is of class 'type'
      */

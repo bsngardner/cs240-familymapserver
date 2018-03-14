@@ -1,7 +1,6 @@
 package edu.byu.broderick.fmserver.test;
 
 import edu.byu.broderick.fmserver.main.ServerProxy;
-import edu.byu.broderick.fmserver.main.server.serialize.JSONEncoder;
 import edu.byu.broderick.fmserver.main.server.request.*;
 import edu.byu.broderick.fmserver.main.server.result.*;
 import edu.byu.broderick.fmserver.main.server.serialize.SerialCodec;
@@ -11,14 +10,12 @@ import org.junit.Test;
 
 import java.io.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by broderick on 3/22/17.
  */
 public class ServerProxyTest {
-
-    ServerProxy server;
 
     final String username = "testuser";
     final String password = "test1234";
@@ -26,6 +23,7 @@ public class ServerProxyTest {
     final String firstname = "test";
     final String lastname = "user";
     final String gender = "m";
+    ServerProxy server;
 
     @Before
     public void setUp() throws Exception {
@@ -40,7 +38,7 @@ public class ServerProxyTest {
     }
 
     @Test
-    public void testAllServerCalls() throws Exception{
+    public void testAllServerCalls() throws Exception {
         register();
         login();
         fill();
@@ -87,18 +85,18 @@ public class ServerProxyTest {
     public void load() throws Exception {
 
         String jsonString = streamToString(new FileInputStream("data/serialize/example.serialize"));
-        LoadRequest req = (LoadRequest) SerialCodec.inst.deserialize(jsonString,LoadRequest.class);
+        LoadRequest req = (LoadRequest) SerialCodec.inst.deserialize(jsonString, LoadRequest.class);
         Result result = this.server.load(req);
         assertTrue(!result.isError());
-        result = this.server.login(new LoginRequest("sheila","parker"));
+        result = this.server.login(new LoginRequest("sheila", "parker"));
         assertTrue(result.getMessage() == null);
         LoginResult loginResult = (LoginResult) result;
         assertTrue(loginResult.getUserName().equals("sheila"));
     }
 
     public void person() throws Exception {
-        LoginResult login = this.server.login(new LoginRequest(username,password));
-        Result result = this.server.person(new PersonRequest(login.getAuthKey(),null));
+        LoginResult login = this.server.login(new LoginRequest(username, password));
+        Result result = this.server.person(new PersonRequest(login.getAuthKey(), null));
         assertTrue(!result.isError());
         PersonResult personResult = (PersonResult) result;
         assertTrue(personResult instanceof PersonResult.AllPersons);
@@ -107,10 +105,10 @@ public class ServerProxyTest {
     }
 
     public void event() throws Exception {
-        LoginResult login = this.server.login(new LoginRequest(username,password));
-        Result result = this.server.event(new EventRequest(login.getAuthKey(),null));
+        LoginResult login = this.server.login(new LoginRequest(username, password));
+        Result result = this.server.event(new EventRequest(login.getAuthKey(), null));
         assertTrue(!result.isError());
-        EventResult eventResult= (EventResult) result;
+        EventResult eventResult = (EventResult) result;
         assertTrue(eventResult instanceof EventResult.AllEvents);
         EventResult.AllEvents allEvents = (EventResult.AllEvents) eventResult;
         assertTrue(allEvents.getEventCount() > 0);

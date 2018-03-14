@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -119,7 +118,7 @@ public class EventDAOTest {
     @Test
     public void loadEvent() throws Exception {
         fillDatabase();
-        Event e = db.eventData.loadEvent(user1,"eA1");
+        Event e = db.eventData.loadEvent(user1, "eA1");
         assertTrue(eventA1.equals(e));
         assertFalse(e.equals(eventA2));
         assertFalse(e.equals(eventB1));

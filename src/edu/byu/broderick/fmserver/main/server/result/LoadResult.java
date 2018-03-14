@@ -24,7 +24,7 @@ public class LoadResult extends Result {
     }
 
     @Override
-    public boolean isError(){
+    public boolean isError() {
         return !this.message.contains("Successfully");
     }
 }

@@ -1,19 +1,16 @@
 package edu.byu.broderick.fmserver.test.model;
 
 import edu.byu.broderick.fmserver.main.model.Event;
-import edu.byu.broderick.fmserver.main.server.serialize.JSONEncoder;
 import edu.byu.broderick.fmserver.main.server.serialize.SerialCodec;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by broderick on 3/22/17.
  */
 public class EventTest {
-
-    private Event event1 = null;
 
     private final String event_json = "{\n" +
             "\"descendant\":\"brody\",\n" +
@@ -26,6 +23,7 @@ public class EventTest {
             "\"eventType\":\"birth\",\n" +
             "\"year\":\"1967\"\n" +
             "}";
+    private Event event1 = null;
 
     @org.junit.Before
     public void setUp() throws Exception {

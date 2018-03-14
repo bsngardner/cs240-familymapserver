@@ -10,8 +10,8 @@ import java.util.List;
  */
 public class Person extends DataModel {
 
-    private String descendant;
     public String personID;
+    private String descendant;
     private String firstName;
     private String lastName;
     private String gender;
@@ -93,61 +93,60 @@ public class Person extends DataModel {
         return descendant;
     }
 
+    public void setDescendant(String username) {
+        this.descendant = username;
+    }
 
     public String getFirstname() {
         return firstName;
-    }
-
-    public String getLastname() {
-        return lastName;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public String getFather() {
-        return father;
-    }
-
-    public String getMother() {
-        return mother;
-    }
-
-    public String getSpouse() {
-        return spouse;
-    }
-
-    public void setPersonid(String personid) {
-        this.personID = personid;
-    }
-
-    public void setDescendant(String username) {
-        this.descendant = username;
     }
 
     public void setFirstname(String firstname) {
         this.firstName = firstname;
     }
 
+    public String getLastname() {
+        return lastName;
+    }
+
     public void setLastname(String lastname) {
         this.lastName = lastname;
+    }
+
+    public String getGender() {
+        return gender;
     }
 
     public void setGender(String gender) {
         this.gender = gender;
     }
 
+    public String getFather() {
+        return father;
+    }
+
     public void setFather(String father) {
         this.father = father;
+    }
+
+    public String getMother() {
+        return mother;
     }
 
     public void setMother(String mother) {
         this.mother = mother;
     }
 
+    public String getSpouse() {
+        return spouse;
+    }
+
     public void setSpouse(String spouse) {
         this.spouse = spouse;
+    }
+
+    public void setPersonid(String personid) {
+        this.personID = personid;
     }
 
     @Override

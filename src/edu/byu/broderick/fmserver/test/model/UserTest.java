@@ -17,12 +17,11 @@ import static org.junit.Assert.assertTrue;
 public class UserTest {
 
 
-    private User user = null;
-
     private final String person_json = SerialCodec.inst.serialize(
             new User("AAAAAAAA", "testuser",
                     "G", "Money", "m",
                     "BBBBBBBB", "CCCCCCCC", "DDDDDDDD"));
+    private User user = null;
 
     @Before
     public void setUp() throws Exception {

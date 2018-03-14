@@ -12,14 +12,13 @@ public class ClearResult extends Result {
     /**
      * Constructor
      * Creates result object from JSON string
-     *
      */
     public ClearResult() {
         super(SUCCESS_STRING);
     }
 
     @Override
-    public boolean isError(){
+    public boolean isError() {
         return !this.message.equals(SUCCESS_STRING);
     }
 

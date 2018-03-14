@@ -16,7 +16,6 @@ public class LoginRequest extends Request {
 
     /**
      * Constructor
-     *
      */
     public LoginRequest() {
         super();
@@ -36,7 +35,7 @@ public class LoginRequest extends Request {
     @Override
     public Result checkRequest() {
         Result result = null;
-        if(userName == null || password == null)
+        if (userName == null || password == null)
             result = new ErrorResult("Bad request");
         return result;
     }
