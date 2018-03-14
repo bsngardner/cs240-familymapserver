@@ -7,7 +7,7 @@ package edu.byu.broderick.fmserver.main.server.result;
  */
 public class LoginResult extends Result {
 
-    private String authKey;
+    private String Authorization;
 
     private String userName;
 
@@ -18,7 +18,7 @@ public class LoginResult extends Result {
      */
     public LoginResult(String key, String userName, String personId) {
         super();
-        this.authKey = key;
+        this.Authorization = key;
         this.userName = userName;
         this.personId = personId;
     }
@@ -33,6 +33,6 @@ public class LoginResult extends Result {
     }
 
     public String getAuthKey() {
-        return authKey;
+        return Authorization;
     }
 }
