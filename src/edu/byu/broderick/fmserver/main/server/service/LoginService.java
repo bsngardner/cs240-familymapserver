@@ -40,7 +40,7 @@ public class LoginService {
             return result;
         }
 
-        String username = request.getuserName();
+        String username = request.getUserName();
         String password = request.getPassword();
 
         User user = db.userData.loadUser(username);
@@ -51,7 +51,7 @@ public class LoginService {
 
         if (password.equals(user.getPassword())) {
             String key = Database.getDB().userData.authenticateUser(user).key();
-            result = new LoginResult(key, user.getUsername(), user.getPersonID());
+            result = new LoginResult(key, user.getUserName(), user.getPersonID());
         } else {
             result = new ErrorResult("Invalid username or password");
         }

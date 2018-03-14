@@ -87,7 +87,7 @@ public class UserDAO {
     }
 
     public void updateUser(User user) {
-        this.db.update(USER_TABLE, USER_COLUMNS, user.getEntryList(), "username", user.getUsername());
+        this.db.update(USER_TABLE, USER_COLUMNS, user.getEntryList(), "username", user.getUserName());
     }
 
     public void deleteUsers() {

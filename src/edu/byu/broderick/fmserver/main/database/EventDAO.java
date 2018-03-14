@@ -79,7 +79,7 @@ public class EventDAO {
      */
     public List<Event> loadUserEvents(User user) {
         List<Event> events = new ArrayList<>();
-        List<List<Object>> records = this.db.select(EVENT_TABLE, EVENT_COLUMNS, "userid", user.getUsername());
+        List<List<Object>> records = this.db.select(EVENT_TABLE, EVENT_COLUMNS, "userid", user.getUserName());
         for (List<Object> record : records) {
             events.add(eventFromRecord(record));
         }
@@ -113,7 +113,7 @@ public class EventDAO {
 
         if (records.size() > 0) {
             event = eventFromRecord(records.get(0));
-            if (!event.getUsername().equals(user.getUsername()))
+            if (!event.getUsername().equals(user.getUserName()))
                 event = null;
         }
 
@@ -126,7 +126,7 @@ public class EventDAO {
      * @param user
      */
     public void deleteUserEvents(User user) {
-        String username = user.getUsername();
+        String username = user.getUserName();
         this.db.delete(EVENT_TABLE, "userid", username);
     }
 

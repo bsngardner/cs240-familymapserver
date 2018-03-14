@@ -56,7 +56,7 @@ public class ServerProxyTest {
         RegisterResult regResult = (RegisterResult) result;
         assertTrue(regResult.getUserName().equals(username));
         assertTrue(regResult.getPersonId() != null && !regResult.getPersonId().equals(""));
-        assertTrue(regResult.getAuthKey() != null && !regResult.getAuthKey().equals(""));
+        assertTrue(regResult.getAuthorization() != null && !regResult.getAuthorization().equals(""));
     }
 
     public void login() throws Exception {
