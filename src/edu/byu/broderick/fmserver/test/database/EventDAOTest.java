@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -54,7 +55,7 @@ public class EventDAOTest {
 
     @After
     public void tearDown() throws Exception {
-
+        db.resetDatabase();
     }
 
     @Test
@@ -62,7 +63,7 @@ public class EventDAOTest {
 
         db.resetDatabase();
         db.userData.storeUser(user1);
-        db.eventData.storeNewEvent(eventA1);
+        db.eventData.storeNewEvent(new Event(eventA1));
         List<Event> events = db.eventData.loadUserEvents(user1);
         Event loaded_event = events.get(0);
         assertFalse(eventA1.getEventid().equals(loaded_event.getEventid()));
@@ -72,7 +73,7 @@ public class EventDAOTest {
     public void storeEvent() throws Exception {
         db.resetDatabase();
         db.userData.storeUser(user1);
-        db.eventData.storeNewEvent(eventA1);
+        db.eventData.storeEvent(eventA1);
         List<Event> events = db.eventData.loadUserEvents(user1);
         Event loaded_event = events.get(0);
         assertTrue(eventA1.equals(loaded_event));
@@ -98,7 +99,7 @@ public class EventDAOTest {
     @Test
     public void loadUserEvents() throws Exception {
         fillDatabase();
-        Set<Event> events = new TreeSet<>(db.eventData.loadUserEvents(user1));
+        Set<Event> events = new HashSet<>(db.eventData.loadUserEvents(user1));
         assertTrue(events.contains(eventA1));
         assertTrue(events.contains(eventA1));
         assertFalse(events.contains(eventB1));
@@ -108,7 +109,7 @@ public class EventDAOTest {
     @Test
     public void loadPersonEvents() throws Exception {
         fillDatabase();
-        Set<Event> events = new TreeSet<>(db.eventData.loadPersonEvents(personC));
+        Set<Event> events = new HashSet<>(db.eventData.loadPersonEvents(personC));
         assertTrue(events.contains(eventA2));
         assertTrue(events.contains(eventB2));
         assertFalse(events.contains(eventA1));
@@ -119,7 +120,7 @@ public class EventDAOTest {
     public void loadEvent() throws Exception {
         fillDatabase();
         Event e = db.eventData.loadEvent(user1,"eA1");
-        assertTrue(e.equals(eventA1));
+        assertTrue(eventA1.equals(e));
         assertFalse(e.equals(eventA2));
         assertFalse(e.equals(eventB1));
         assertFalse(e.equals(eventB2));
@@ -129,16 +130,20 @@ public class EventDAOTest {
     public void deleteUserEvents() throws Exception {
         fillDatabase();
         db.eventData.deleteUserEvents(user2);
-        Set<Event> events = new TreeSet<>(db.eventData.loadUserEvents(user2));
+        Set<Event> events = new HashSet<>(db.eventData.loadUserEvents(user2));
         assertTrue(events.size() == 0);
-        events = new TreeSet<>(db.eventData.loadUserEvents(user1));
+        events = new HashSet<>(db.eventData.loadUserEvents(user1));
         assertTrue(events.size() == 2);
     }
 
     @Test
     public void deleteEvents() throws Exception {
         fillDatabase();
-
+        db.eventData.deleteEvents();
+        Set<Event> events = new HashSet<>(db.eventData.loadUserEvents(user2));
+        assertTrue(events.size() == 0);
+        events = new HashSet<>(db.eventData.loadUserEvents(user1));
+        assertTrue(events.size() == 0);
     }
 
 }

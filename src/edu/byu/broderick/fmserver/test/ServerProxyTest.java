@@ -4,6 +4,7 @@ import edu.byu.broderick.fmserver.main.ServerProxy;
 import edu.byu.broderick.fmserver.main.server.serialize.JSONEncoder;
 import edu.byu.broderick.fmserver.main.server.request.*;
 import edu.byu.broderick.fmserver.main.server.result.*;
+import edu.byu.broderick.fmserver.main.server.serialize.SerialCodec;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -86,7 +87,7 @@ public class ServerProxyTest {
     public void load() throws Exception {
 
         String jsonString = streamToString(new FileInputStream("data/serialize/example.serialize"));
-        LoadRequest req = (LoadRequest) JSONEncoder.encoder.convertToObject(jsonString,LoadRequest.class);
+        LoadRequest req = (LoadRequest) SerialCodec.inst.deserialize(jsonString,LoadRequest.class);
         Result result = this.server.load(req);
         assertTrue(!result.isError());
         result = this.server.login(new LoginRequest("sheila","parker"));

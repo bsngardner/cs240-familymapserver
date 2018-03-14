@@ -36,10 +36,10 @@ public class FillService {
         Gson gson = new GsonBuilder().create();
 
         try {
-            NameDict fnames = gson.fromJson(new BufferedReader(new FileReader("data/serialize/fnames.serialize")), NameDict.class);
-            NameDict mnames = gson.fromJson(new BufferedReader(new FileReader("data/serialize/mnames.serialize")), NameDict.class);
-            NameDict snames = gson.fromJson(new BufferedReader(new FileReader("data/serialize/mnames.serialize")), NameDict.class);
-            LocationDict locData = gson.fromJson(new BufferedReader(new FileReader("data/serialize/locations.serialize")), LocationDict.class);
+            NameDict fnames = gson.fromJson(new BufferedReader(new FileReader("data/json/fnames.json")), NameDict.class);
+            NameDict mnames = gson.fromJson(new BufferedReader(new FileReader("data/json/mnames.json")), NameDict.class);
+            NameDict snames = gson.fromJson(new BufferedReader(new FileReader("data/json/mnames.json")), NameDict.class);
+            LocationDict locData = gson.fromJson(new BufferedReader(new FileReader("data/json/locations.json")), LocationDict.class);
 
             for (String s : fnames.data) {
                 female_names.add(s);

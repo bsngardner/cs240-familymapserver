@@ -7,7 +7,7 @@ import java.util.Base64;
 public class Testing {
 
     public static void main(String[] args){
-        final int NUM_BITS = 16384;
+        final int NUM_BITS = 32;
         BigInteger key = new BigInteger(NUM_BITS, new SecureRandom());
         String keyString = new String(Base64.getEncoder().encode(key.toByteArray()));
         BigInteger decoded = new BigInteger(Base64.getDecoder().decode(keyString));

@@ -3,6 +3,7 @@ package edu.byu.broderick.fmserver.main;
 import edu.byu.broderick.fmserver.main.server.serialize.JSONEncoder;
 import edu.byu.broderick.fmserver.main.server.request.*;
 import edu.byu.broderick.fmserver.main.server.result.*;
+import edu.byu.broderick.fmserver.main.server.serialize.SerialCodec;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -42,7 +43,6 @@ public class ServerProxy {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        enc = new JSONEncoder();
     }
 
     /**
@@ -53,9 +53,9 @@ public class ServerProxy {
      * @return
      */
     public RegisterResult register(RegisterRequest request) {
-        String body = enc.convertToJSON(request);
+        String body = SerialCodec.inst.serialize(request);
         String response = executeServerPost("/user/register", body);
-        RegisterResult result = (RegisterResult) enc.convertToObject(response, RegisterResult.class);
+        RegisterResult result = (RegisterResult) SerialCodec.inst.deserialize(response, RegisterResult.class);
         return result;
     }
 
@@ -66,9 +66,9 @@ public class ServerProxy {
      * @return
      */
     public LoginResult login(LoginRequest request) {
-        String body = enc.convertToJSON(request);
+        String body = SerialCodec.inst.serialize(request);
         String response = executeServerPost("/user/login", body);
-        LoginResult result = (LoginResult) enc.convertToObject(response, LoginResult.class);
+        LoginResult result = (LoginResult) SerialCodec.inst.deserialize(response, LoginResult.class);
         return result;
     }
 
@@ -81,7 +81,7 @@ public class ServerProxy {
      */
     public ClearResult clear(ClearRequest request) {
         String response = executeServerPost("/clear", null);
-        ClearResult result = (ClearResult) enc.convertToObject(response, ClearResult.class);
+        ClearResult result = (ClearResult) SerialCodec.inst.deserialize(response, ClearResult.class);
         return result;
     }
 
@@ -102,7 +102,7 @@ public class ServerProxy {
             path += "/" + request.getGenerations();
         }
         String response = executeServerPost(path, null);
-        FillResult result = (FillResult) enc.convertToObject(response, FillResult.class);
+        FillResult result = (FillResult) SerialCodec.inst.deserialize(response, FillResult.class);
         return result;
     }
 
@@ -114,9 +114,9 @@ public class ServerProxy {
      * @return
      */
     public LoadResult load(LoadRequest request) {
-        String body = enc.convertToJSON(request);
+        String body = SerialCodec.inst.serialize(request);
         String response = executeServerPost("/load", body);
-        LoadResult result = (LoadResult) enc.convertToObject(response, LoadResult.class);
+        LoadResult result = (LoadResult) SerialCodec.inst.deserialize(response, LoadResult.class);
         return result;
     }
 
@@ -138,7 +138,7 @@ public class ServerProxy {
         }
         String authKey = request.getAuthKey();
         String response = executeServerGet(path, authKey);
-        PersonResult result = (PersonResult) enc.convertToObject(response, PersonResult.class);
+        PersonResult result = (PersonResult) SerialCodec.inst.deserialize(response, PersonResult.class);
         return result;
     }
 
@@ -160,7 +160,7 @@ public class ServerProxy {
         }
         String authKey = request.getAuthKey();
         String response = executeServerGet(path, authKey);
-        EventResult result = (EventResult) enc.convertToObject(response, EventResult.class);
+        EventResult result = (EventResult) SerialCodec.inst.deserialize(response, EventResult.class);
         return result;
     }
 

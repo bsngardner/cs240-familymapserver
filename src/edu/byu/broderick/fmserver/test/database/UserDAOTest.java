@@ -7,7 +7,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Created by broderick on 3/22/17.
+ * JUnit tests for UserDAO
+ *
+ * @author Broderick Gardner
  */
 public class UserDAOTest {
     @Before
