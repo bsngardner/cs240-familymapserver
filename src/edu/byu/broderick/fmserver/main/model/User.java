@@ -52,6 +52,10 @@ public class User extends DataModel {
         this.info = info;
     }
 
+    public User(User u){
+        this(u.username, u.password, u.email, u.firstname, u.lastname, u.gender, u.personID, u.info);
+    }
+
     /**
      * Generate new auth token for user
      *
