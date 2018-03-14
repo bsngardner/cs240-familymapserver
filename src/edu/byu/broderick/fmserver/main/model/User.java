@@ -22,6 +22,9 @@ public class User extends DataModel {
     private String personID;
     private String info;
 
+    private boolean hasHash = false;
+    private int hashcode;
+
     /**
      * Constructor
      *
@@ -57,6 +60,7 @@ public class User extends DataModel {
 
     /**
      * Create list of object fields for insertion into database
+     *
      * @return
      */
     public List<Object> getEntryList() {
@@ -111,6 +115,44 @@ public class User extends DataModel {
 
     public void setInfo(String info) {
         this.info = info;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (!username.equals(user.username)) return false;
+        if (!password.equals(user.password)) return false;
+        if (!email.equals(user.email)) return false;
+        if (!firstname.equals(user.firstname)) return false;
+        if (!lastname.equals(user.lastname)) return false;
+        if (!gender.equals(user.gender)) return false;
+        if (!personID.equals(user.personID)) return false;
+        return info.equals(user.info);
+    }
+
+    private void computeHashCode() {
+        int result = username.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + email.hashCode();
+        result = 31 * result + firstname.hashCode();
+        result = 31 * result + lastname.hashCode();
+        result = 31 * result + gender.hashCode();
+        result = 31 * result + personID.hashCode();
+        result = 31 * result + info.hashCode();
+        hashcode = result;
+    }
+
+    @Override
+    public int hashCode() {
+        if (!hasHash) {
+            computeHashCode();
+            hasHash = true;
+        }
+        return hashcode;
     }
 
     /**
@@ -168,11 +210,10 @@ public class User extends DataModel {
          * @return
          */
         private static String generateNewKey() {
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < TOK_LEN; i++)
-                sb.append(key_dict[rand.nextInt(key_dict.length)]);
-            return sb.toString();
+            final int NUM_BITS = 32;
+            BigInteger key = new BigInteger(NUM_BITS, new SecureRandom());
+            String keyString = new String(Base64.getEncoder().encode(key.toByteArray()));
+            return keyString;
         }
 
         /**

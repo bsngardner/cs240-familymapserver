@@ -113,7 +113,7 @@ public class EventDAO {
 
         if (records.size() > 0) {
             event = eventFromRecord(records.get(0));
-            if (event.getUsername() != user.getUsername())
+            if (!event.getUsername().equals(user.getUsername()))
                 event = null;
         }
 

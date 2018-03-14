@@ -2,13 +2,14 @@ package edu.byu.broderick.fmserver.main.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Data model class containing information about an Event
  *
  * @author Broderick Gardner
  */
-public class Event extends DataModel {
+public class Event extends DataModel{
 
     private String eventID;
     private String descendant;
@@ -19,6 +20,9 @@ public class Event extends DataModel {
     private String city;
     private String eventType;
     private String year;
+
+    private int hashcode;
+    private boolean hasHash = false;
 
     /**
      * Constructor
@@ -38,6 +42,18 @@ public class Event extends DataModel {
         this.eventID = eventid;
     }
 
+    /**
+     * New event constructor, does not take an event id. Assumes that the event id will be added later
+     *
+     * @param username
+     * @param personid
+     * @param latitude
+     * @param longitude
+     * @param country
+     * @param city
+     * @param eventType
+     * @param year
+     */
     public Event(String username, String personid, double latitude, double longitude, String country, String city, String eventType, String year) {
         super();
         this.eventID = null;
@@ -50,6 +66,26 @@ public class Event extends DataModel {
         this.eventType = eventType;
         this.year = year;
     }
+
+    /**
+     * Copy constructor
+     *
+     * @param e
+     */
+    public Event(Event e){
+        super();
+        this.eventID = e.eventID;
+        this.descendant = e.descendant;
+        this.personID = e.personID;
+        this.latitude = e.latitude;
+        this.longitude = e.longitude;
+        this.country = e.country;
+        this.city = e.city;
+        this.eventType = e.eventType;
+        this.year = e.year;
+    }
+
+
 
     public List<Object> getEntryList() {
         List<Object> entries = new ArrayList<>();
@@ -106,31 +142,47 @@ public class Event extends DataModel {
         this.eventID = eventid;
     }
 
+    private void calculateHashCode() {
+        int result;
+        long temp;
+        result = eventID.hashCode();
+        result = 31 * result + descendant.hashCode();
+        result = 31 * result + personID.hashCode();
+        temp = Double.doubleToLongBits(latitude);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(longitude);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + country.hashCode();
+        result = 31 * result + city.hashCode();
+        result = 31 * result + eventType.hashCode();
+        result = 31 * result + year.hashCode();
+        hashcode = result;
+    }
+
+    @Override
+    public int hashCode() {
+        if(!hasHash) {
+            calculateHashCode();
+            hasHash = true;
+        }
+        return hashcode;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Event))
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        Event e = (Event) o;
+        Event event = (Event) o;
 
-        if (!eventID.equals(e.eventID))
-            return false;
-        if (!descendant.equals(e.descendant))
-            return false;
-        if (!personID.equals(e.personID))
-            return false;
-        if (latitude != e.latitude)
-            return false;
-        if (longitude != e.longitude)
-            return false;
-        if (!country.equals(e.country))
-            return false;
-        if (!city.equals(e.city))
-            return false;
-        if (!eventType.equals(e.eventType))
-            return false;
-        if (!year.equals(e.year))
-            return false;
-        return true;
+        if (Double.compare(event.latitude, latitude) != 0) return false;
+        if (Double.compare(event.longitude, longitude) != 0) return false;
+        if (!eventID.equals(event.eventID)) return false;
+        if (!descendant.equals(event.descendant)) return false;
+        if (!personID.equals(event.personID)) return false;
+        if (!country.equals(event.country)) return false;
+        if (!city.equals(event.city)) return false;
+        if (!eventType.equals(event.eventType)) return false;
+        return year.equals(event.year);
     }
 }

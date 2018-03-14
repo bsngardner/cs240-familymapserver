@@ -19,6 +19,9 @@ public class Person extends DataModel {
     private String mother;
     private String spouse;
 
+    private boolean hasHash = false;
+    private int hashcode;
+
     /**
      * Constructor
      *
@@ -58,7 +61,16 @@ public class Person extends DataModel {
         this.spouse = spouse;
     }
 
+    public Person(Person p) {
+        this(p.personID, p.descendant, p.firstName, p.lastName, p.gender, p.father, p.mother, p.spouse);
+    }
 
+
+    /**
+     * Returns all fields in an ordered list
+     *
+     * @return
+     */
     public List<Object> getEntryList() {
         List<Object> entries = new ArrayList<Object>();
         entries.add(personID);
@@ -138,5 +150,41 @@ public class Person extends DataModel {
         this.spouse = spouse;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Person person = (Person) o;
+
+        if (!descendant.equals(person.descendant)) return false;
+        if (!personID.equals(person.personID)) return false;
+        if (!firstName.equals(person.firstName)) return false;
+        if (!lastName.equals(person.lastName)) return false;
+        if (!gender.equals(person.gender)) return false;
+        if (father != null ? !father.equals(person.father) : person.father != null) return false;
+        if (mother != null ? !mother.equals(person.mother) : person.mother != null) return false;
+        return spouse != null ? spouse.equals(person.spouse) : person.spouse == null;
+    }
+
+    private void computeHashCode() {
+        int result = descendant.hashCode();
+        result = 31 * result + personID.hashCode();
+        result = 31 * result + firstName.hashCode();
+        result = 31 * result + lastName.hashCode();
+        result = 31 * result + gender.hashCode();
+        result = 31 * result + (father != null ? father.hashCode() : 0);
+        result = 31 * result + (mother != null ? mother.hashCode() : 0);
+        result = 31 * result + (spouse != null ? spouse.hashCode() : 0);
+        hashcode = result;
+    }
+
+    @Override
+    public int hashCode() {
+        if (!hasHash) {
+            computeHashCode();
+            hasHash = true;
+        }
+        return hashcode;
+    }
 }

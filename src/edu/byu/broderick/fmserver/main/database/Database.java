@@ -1,6 +1,8 @@
 package edu.byu.broderick.fmserver.main.database;
 
 import java.io.File;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.sql.*;
 import java.util.*;
 
@@ -421,13 +423,10 @@ public class Database {
      * @return
      */
     public String generateID() {
-        final char letters[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
-        final int UID_LEN = 16;
-        StringBuilder b = new StringBuilder();
-        for (int i = 0; i < UID_LEN; i++) {
-            b.append(letters[rand.nextInt(letters.length)]);
-        }
-        return b.toString();
+        final int NUM_BITS = 32;
+        BigInteger key = new BigInteger(NUM_BITS, new SecureRandom());
+        String keyString = new String(Base64.getEncoder().encode(key.toByteArray()));
+        return keyString;
     }
 
 }

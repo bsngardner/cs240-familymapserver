@@ -87,7 +87,7 @@ public class PersonDAO {
             return null;
         List<Object> record = records.get(0);
         Person person = personFromRecord(record);
-        if (person.getDescendant() != user.getUsername())
+        if (!person.getDescendant().equals(user.getUsername()))
             return null;
         else
             return person;
