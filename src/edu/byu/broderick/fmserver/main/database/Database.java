@@ -417,6 +417,7 @@ public class Database {
         final int NUM_BITS = 32;
         BigInteger key = new BigInteger(NUM_BITS, new SecureRandom());
         String keyString = new String(Base64.getEncoder().encode(key.toByteArray()));
+        keyString.replace('/', '_');
         return keyString;
     }
 

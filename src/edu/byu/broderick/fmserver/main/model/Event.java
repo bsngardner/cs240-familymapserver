@@ -11,7 +11,7 @@ import java.util.List;
 public class Event extends DataModel {
 
     private String eventID;
-    private String descendant;
+    private String username;
     private String personID;
     private double latitude;
     private double longitude;
@@ -56,7 +56,7 @@ public class Event extends DataModel {
     public Event(String username, String personid, double latitude, double longitude, String country, String city, String eventType, String year) {
         super();
         this.eventID = null;
-        this.descendant = username;
+        this.username = username;
         this.personID = personid;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -74,7 +74,7 @@ public class Event extends DataModel {
     public Event(Event e) {
         super();
         this.eventID = e.eventID;
-        this.descendant = e.descendant;
+        this.username = e.username;
         this.personID = e.personID;
         this.latitude = e.latitude;
         this.longitude = e.longitude;
@@ -88,7 +88,7 @@ public class Event extends DataModel {
     public List<Object> getEntryList() {
         List<Object> entries = new ArrayList<>();
         entries.add(eventID);
-        entries.add(descendant);
+        entries.add(username);
         entries.add(personID);
         entries.add(latitude);
         entries.add(longitude);
@@ -109,7 +109,7 @@ public class Event extends DataModel {
     }
 
     public String getUsername() {
-        return descendant;
+        return username;
     }
 
     public String getPersonID() {
@@ -144,7 +144,7 @@ public class Event extends DataModel {
         int result;
         long temp;
         result = eventID.hashCode();
-        result = 31 * result + descendant.hashCode();
+        result = 31 * result + username.hashCode();
         result = 31 * result + personID.hashCode();
         temp = Double.doubleToLongBits(latitude);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
@@ -176,7 +176,7 @@ public class Event extends DataModel {
         if (Double.compare(event.latitude, latitude) != 0) return false;
         if (Double.compare(event.longitude, longitude) != 0) return false;
         if (!eventID.equals(event.eventID)) return false;
-        if (!descendant.equals(event.descendant)) return false;
+        if (!username.equals(event.username)) return false;
         if (!personID.equals(event.personID)) return false;
         if (!country.equals(event.country)) return false;
         if (!city.equals(event.city)) return false;

@@ -11,6 +11,8 @@ import edu.byu.broderick.fmserver.main.server.service.Services;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Container class for Handler objects.  Handlers convert from JSON to a server request object and from a response
@@ -24,22 +26,36 @@ public class Handlers {
      * Handler object for server root access to html index.  Returns main test page for server.
      */
     public HttpHandler indexHandler = httpExchange -> {
+        final Path WEB_PATH = Paths.get("data/web");
+        final String DEFAULT_HTML = "index.html";
+        final String NOT_FOUND = "HTML/404.html";
+        final int BUF_SIZE = 2048;
 
         String cmd = httpExchange.getRequestURI().toString();
-        String[] params = cmd.split("/", 2);
-        String target = "index.html";
-
-        httpExchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-
-        OutputStreamWriter writer = new OutputStreamWriter(httpExchange.getResponseBody());
-        String filepath = "data/HTML/" + target;
-        BufferedReader reader = new BufferedReader(new FileReader(filepath));
-        String line;
-        while ((line = reader.readLine()) != null) {
-            writer.write(line + "\n");
+        File file;
+        if(cmd.equals("/")){
+            file = WEB_PATH.resolve(DEFAULT_HTML).toFile();
+        }else{
+            file = WEB_PATH.resolve(cmd.substring(1)).toFile();
         }
-        reader.close();
-        writer.close();
+
+        if(!file.exists()){
+            file = WEB_PATH.resolve(NOT_FOUND).toFile();
+        }
+
+        try(
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            OutputStreamWriter writer = new OutputStreamWriter(httpExchange.getResponseBody());
+                ){
+            httpExchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+            char[] buffer = new char[BUF_SIZE];
+            int numread;
+            while ((numread = reader.read(buffer, 0, BUF_SIZE)) != -1) {
+                writer.write(buffer, 0, numread);
+            }
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
     };
 
     /**

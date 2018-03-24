@@ -17,7 +17,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by broderick on 3/22/17.
+ * JUnit test cases for PersonDAO class
+ *
+ * @author Broderick Gardner
  */
 public class PersonDAOTest {
 

@@ -1,6 +1,7 @@
 package edu.byu.broderick.fmserver.test.model;
 
 import edu.byu.broderick.fmserver.main.model.Event;
+import edu.byu.broderick.fmserver.main.server.request.Request;
 import edu.byu.broderick.fmserver.main.server.serialize.SerialCodec;
 
 import java.util.List;
@@ -8,7 +9,9 @@ import java.util.List;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by broderick on 3/22/17.
+ * JUnit test cases for Event model class
+ *
+ * @author Broderick Gardner
  */
 public class EventTest {
 
@@ -60,7 +63,7 @@ public class EventTest {
 
     @org.junit.Test
     public void EventTest() throws Exception {
-        Event local = (Event) SerialCodec.inst.deserialize(event_json, Event.class);
+        Event local = ((Request.REvent) SerialCodec.inst.deserialize(event_json, Request.REvent.class)).getEvent();
         assertTrue(local.equals(event1));
     }
 

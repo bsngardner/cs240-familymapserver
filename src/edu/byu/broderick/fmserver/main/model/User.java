@@ -16,7 +16,7 @@ import java.util.Random;
  */
 public class User extends DataModel {
 
-    private String userName;
+    private String username;
     private String password;
     private String email;
     private String firstname;
@@ -42,7 +42,7 @@ public class User extends DataModel {
      */
     public User(String username, String password, String email, String firstname, String lastname, String gender, String personid, String info) {
         super();
-        this.userName = username;
+        this.username = username;
         this.password = password;
         this.email = email;
         this.firstname = firstname;
@@ -72,7 +72,7 @@ public class User extends DataModel {
      */
     public List<Object> getEntryList() {
         List<Object> entries = new ArrayList<>();
-        entries.add(userName);
+        entries.add(username);
         entries.add(password);
         entries.add(email);
         entries.add(firstname);
@@ -84,8 +84,8 @@ public class User extends DataModel {
     }
 
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
@@ -131,7 +131,7 @@ public class User extends DataModel {
 
         User user = (User) o;
 
-        if (!userName.equals(user.userName)) return false;
+        if (!username.equals(user.username)) return false;
         if (!password.equals(user.password)) return false;
         if (!email.equals(user.email)) return false;
         if (!firstname.equals(user.firstname)) return false;
@@ -142,7 +142,7 @@ public class User extends DataModel {
     }
 
     private void computeHashCode() {
-        int result = userName.hashCode();
+        int result = username.hashCode();
         result = 31 * result + password.hashCode();
         result = 31 * result + email.hashCode();
         result = 31 * result + firstname.hashCode();
@@ -183,7 +183,7 @@ public class User extends DataModel {
         public AuthToken(User user) {
             this.time = OffsetDateTime.now();
             key = AuthToken.generateNewKey();
-            this.username = user.getUserName();
+            this.username = user.getUsername();
         }
 
         /**

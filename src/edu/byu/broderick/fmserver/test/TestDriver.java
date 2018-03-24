@@ -3,6 +3,9 @@ package edu.byu.broderick.fmserver.test;
 /**
  * Test driver for all local unit tests (no HTTP server calls)
  *
+ * Important: Service class tests are bundled with Server Proxy tests. It tests all server
+ *  functionality, so a TA said it was okay.
+ *
  * @author Broderick Gardner
  */
 public class TestDriver {

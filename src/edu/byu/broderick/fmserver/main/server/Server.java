@@ -19,7 +19,7 @@ public class Server {
     private static final int MAX_GENERATIONS = 10;
     private static final int DEFAULT_PORT = 8080;
     private static final int MAX_WAITING_CONNECTIONS = 10;
-    private static final String HTML_PATH = "data/HTML";
+    private static final String HTML_PATH = "data/web";
 
     private HttpServer server;
     private File htmlFile;
@@ -57,96 +57,9 @@ public class Server {
         server.createContext("/load", handlers.loadHandler);
         server.createContext("/", handlers.indexHandler);
 
+        System.out.println("Server started");
+
         server.start();
     }
-
-    /**
-     * Creates a new user account, generates 4 generations of ancestor data for the new
-     * user, logs the user in, and returns an auth token.
-     *
-     * @param request
-     * @return
-     */
-    public RegisterResult register(RegisterRequest request) {
-        return null;
-    }
-
-    /**
-     * Logs in the user and returns an auth token.
-     *
-     * @param request
-     * @return
-     */
-    public LoginResult login(LoginRequest request) {
-        return null;
-    }
-
-    /**
-     * Deletes ALL data from the database, including user accounts, auth tokens, and
-     * generated person and event data.
-     *
-     * @param request
-     * @return
-     */
-    public ClearResult clear(ClearRequest request) {
-        return null;
-    }
-
-    /**
-     * Populates the server's database with generated data for the specified user name.
-     * The required "username" parameter must be a user already registered with the server. If there is
-     * any data in the database already associated with the given user name, it is deleted. The
-     * optional “generations” parameter lets the caller specify the number of generations of ancestors
-     * to be generated, and must be a non-negative integer (the default is 4, which results in 31 new
-     * persons each with associated events).
-     *
-     * @param request
-     * @return
-     */
-    public FillResult fill(FillRequest request) {
-        return null;
-    }
-
-    /**
-     * Clears all data from the database (just like the /clear API), and then loads the
-     * posted user, person, and event data into the database.
-     *
-     * @param request
-     * @return
-     */
-    public LoadResult load(LoadRequest request) {
-        return null;
-    }
-
-    /**
-     * Returns the single Person object with the specified ID.
-     * <p>
-     * or if no ID specified,
-     * <p>
-     * Returns ALL family members of the current user. The current user is
-     * determined from the provided auth token.
-     *
-     * @param request
-     * @return
-     */
-    public PersonResult person(PersonRequest request) {
-        return null;
-    }
-
-    /**
-     * Returns the single Event object with the specified ID.
-     * <p>
-     * or if no ID specified,
-     * <p>
-     * Returns ALL events for ALL family members of the current user. The current
-     * user is determined from the provided auth token.
-     *
-     * @param request
-     * @return
-     */
-    public EventResult event(EventRequest request) {
-        return null;
-    }
-
 
 }

@@ -52,7 +52,7 @@ public class PersonTest {
     public void getEntryList() throws Exception {
         List<Object> entries = person.getEntryList();
         assertTrue(person.getPersonID().equals(entries.get(0)));
-        assertTrue(person.getDescendant().equals(entries.get(1)));
+        assertTrue(person.getUsername().equals(entries.get(1)));
         assertTrue(person.getFirstname().equals(entries.get(2)));
         assertTrue(person.getLastname().equals(entries.get(3)));
         assertTrue(person.getGender().equals(entries.get(4)));

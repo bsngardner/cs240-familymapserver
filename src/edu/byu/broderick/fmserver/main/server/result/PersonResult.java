@@ -2,6 +2,7 @@ package edu.byu.broderick.fmserver.main.server.result;
 
 import edu.byu.broderick.fmserver.main.model.Person;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class PersonResult extends Result {
         private String spouse;
 
         public SinglePerson(Person person) {
-            this.descendant = person.getDescendant();
+            this.descendant = person.getUsername();
             this.personID = person.getPersonID();
             this.firstName = person.getFirstname();
             this.lastName = person.getLastname();
@@ -40,6 +41,11 @@ public class PersonResult extends Result {
             this.father = person.getFather();
             this.mother = person.getMother();
             this.spouse = person.getSpouse();
+        }
+
+        public Person getPerson(){
+            Person p = new Person(personID, descendant, firstName, lastName, gender, father, mother, spouse);
+            return p;
         }
 
     }
@@ -53,6 +59,14 @@ public class PersonResult extends Result {
             for (Person person : persons) {
                 data.add(new SinglePerson(person));
             }
+        }
+
+        public List<Person> getPersons(){
+            List<Person> persons = new ArrayList<>();
+            for(SinglePerson p : data){
+                persons.add(p.getPerson());
+            }
+            return persons;
         }
 
         public int getPersonCount() {

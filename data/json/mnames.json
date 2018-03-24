@@ -1,5 +1,4 @@
-{
-  "data": [
+{"data": [
     "Kevin",
     "Zack",
     "Ken",
@@ -9,7 +8,6 @@
     "Stanley",
     "Kermit",
     "Augustine",
-    "Spencer",
     "Silas",
     "Sol",
     "Franklyn",
@@ -61,6 +59,8 @@
     "Mohammed",
     "Justin",
     "Al",
+    "Victor",
+    "Spencer",
     "Irving",
     "Paris",
     "Theodore",
@@ -78,7 +78,6 @@
     "Santiago",
     "Son",
     "Seeger",
-    "Eliseo",
     "Daniel",
     "Larry",
     "Robbie",
@@ -107,14 +106,12 @@
     "Dylan",
     "Scott",
     "Reuben",
-    "Malcom",
     "Junior",
     "Jarrett",
     "Levi",
     "Irwin",
     "Hollis",
     "Agustin",
-    "Odell",
     "Dave",
     "Dalton",
     "Tracey",
@@ -131,17 +128,12 @@
     "Arden",
     "Stacy",
     "Marlon",
-    "Clifford",
-    "Valentin",
-    "Freddie",
     "Lucien",
     "Woodrow",
     "Elvin",
     "Davis",
     "Ricardo",
     "Hilton",
-    "Errol",
-    "Wilbert",
     "Jasper",
     "Barton",
     "Anthony",
@@ -150,7 +142,5 @@
     "Granville",
     "Burton",
     "Lawrence",
-    "Santo",
-    "Carey"
-  ]
-}
+    "Santo"
+]}

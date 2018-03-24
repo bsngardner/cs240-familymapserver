@@ -51,7 +51,7 @@ public class LoginService {
 
         if (password.equals(user.getPassword())) {
             String key = Database.getDB().userData.authenticateUser(user).key();
-            result = new LoginResult(key, user.getUserName(), user.getPersonID());
+            result = new LoginResult(key, user.getUsername(), user.getPersonID());
         } else {
             result = new ErrorResult("Invalid username or password");
         }

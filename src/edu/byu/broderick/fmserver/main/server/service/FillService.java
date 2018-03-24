@@ -130,7 +130,7 @@ public class FillService {
      */
     public void fillUser(User user, int generations) {
 
-        String username = user.getUserName();
+        String username = user.getUsername();
         String firstname = user.getFirstname();
         String lastname = user.getLastname();
         String gender = user.getGender();
@@ -212,7 +212,7 @@ public class FillService {
      * @param birthYearBase
      */
     private void fillEvents(Person person, int birthYearBase) {
-        String username = person.getDescendant();
+        String username = person.getUsername();
         String personid = person.getPersonID();
 
         String country = getRandomCountry();

@@ -66,7 +66,7 @@ public class PersonDAO {
      */
     public List<Person> loadUserPersons(User user) {
         List<Person> persons = new ArrayList<>();
-        List<List<Object>> records = this.db.select(PERSON_TABLE, PERSON_COLUMNS, "userid", user.getUserName());
+        List<List<Object>> records = this.db.select(PERSON_TABLE, PERSON_COLUMNS, "userid", user.getUsername());
         for (List<Object> record : records) {
             persons.add(personFromRecord(record));
         }
@@ -85,7 +85,7 @@ public class PersonDAO {
             return null;
         List<Object> record = records.get(0);
         Person person = personFromRecord(record);
-        if (!person.getDescendant().equals(user.getUserName()))
+        if (!person.getUsername().equals(user.getUsername()))
             return null;
         else
             return person;
@@ -127,7 +127,7 @@ public class PersonDAO {
      * @param user
      */
     public void deleteUserPersons(User user) {
-        db.delete(PERSON_TABLE, "userid", user.getUserName());
+        db.delete(PERSON_TABLE, "userid", user.getUsername());
     }
 
     /**

@@ -46,7 +46,7 @@ public class UserTest {
     @org.junit.Test
     public void getEntryList() throws Exception {
         List<Object> entries = user.getEntryList();
-        assertTrue(user.getUserName().equals(entries.get(0)));
+        assertTrue(user.getUsername().equals(entries.get(0)));
         assertTrue(user.getPassword().equals(entries.get(1)));
         assertTrue(user.getEmail().equals(entries.get(2)));
         assertTrue(user.getFirstname().equals(entries.get(3)));

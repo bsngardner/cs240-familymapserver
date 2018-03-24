@@ -1,7 +1,9 @@
 package edu.byu.broderick.fmserver.test;
 
 /**
- * Created by broderick on 4/6/17.
+ * Proxy test driver; assumes server is running at url with port passed in as argument.
+ *
+ * @author Broderick Gardner
  */
 public class ProxyTestDriver {
 

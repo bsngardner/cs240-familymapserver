@@ -66,6 +66,11 @@ public class EventResult extends Result {
             this.eventType = event.getEventType();
             this.year = event.getYear();
         }
+
+        public Event getEvent() {
+            Event event = new Event(eventID, descendant, personID, latitude, longitude, country, city, eventType, year);
+            return event;
+        }
     }
 
     /**
@@ -85,6 +90,14 @@ public class EventResult extends Result {
 
         public int getEventCount() {
             return data.size();
+        }
+
+        public List<Event> getEvents() {
+            List<Event> events = new ArrayList<>();
+            for(SingleEvent e : data){
+                events.add(e.getEvent());
+            }
+            return events;
         }
     }
 

@@ -76,10 +76,9 @@ public class ServerProxy {
      * Deletes ALL data from the database, including user accounts, auth tokens, and
      * generated person and event data.
      *
-     * @param request
      * @return
      */
-    public ClearResult clear(ClearRequest request) {
+    public ClearResult clear() {
         String response = executeServerPost("/clear", null);
         ClearResult result = (ClearResult) SerialCodec.inst.deserialize(response, ClearResult.class);
         return result;

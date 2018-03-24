@@ -11,9 +11,9 @@ import java.util.List;
 public class Person extends DataModel {
 
     public String personID;
-    private String descendant;
-    private String firstName;
-    private String lastName;
+    private String username;
+    private String firstname;
+    private String lastname;
     private String gender;
     private String father;
     private String mother;
@@ -52,9 +52,9 @@ public class Person extends DataModel {
      */
     public Person(String username, String firstname, String lastname, String gender, String father, String mother, String spouse) {
         super();
-        this.descendant = username;
-        this.firstName = firstname;
-        this.lastName = lastname;
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.gender = gender;
         this.father = father;
         this.mother = mother;
@@ -62,7 +62,7 @@ public class Person extends DataModel {
     }
 
     public Person(Person p) {
-        this(p.personID, p.descendant, p.firstName, p.lastName, p.gender, p.father, p.mother, p.spouse);
+        this(p.personID, p.username, p.firstname, p.lastname, p.gender, p.father, p.mother, p.spouse);
     }
 
 
@@ -74,9 +74,9 @@ public class Person extends DataModel {
     public List<Object> getEntryList() {
         List<Object> entries = new ArrayList<Object>();
         entries.add(personID);
-        entries.add(descendant);
-        entries.add(firstName);
-        entries.add(lastName);
+        entries.add(username);
+        entries.add(firstname);
+        entries.add(lastname);
         entries.add(gender);
         entries.add(father);
         entries.add(mother);
@@ -89,28 +89,28 @@ public class Person extends DataModel {
         return personID;
     }
 
-    public String getDescendant() {
-        return descendant;
+    public String getUsername() {
+        return username;
     }
 
-    public void setDescendant(String username) {
-        this.descendant = username;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstname() {
-        return firstName;
+        return firstname;
     }
 
     public void setFirstname(String firstname) {
-        this.firstName = firstname;
+        this.firstname = firstname;
     }
 
     public String getLastname() {
-        return lastName;
+        return lastname;
     }
 
     public void setLastname(String lastname) {
-        this.lastName = lastname;
+        this.lastname = lastname;
     }
 
     public String getGender() {
@@ -156,10 +156,10 @@ public class Person extends DataModel {
 
         Person person = (Person) o;
 
-        if (!descendant.equals(person.descendant)) return false;
+        if (!username.equals(person.username)) return false;
         if (!personID.equals(person.personID)) return false;
-        if (!firstName.equals(person.firstName)) return false;
-        if (!lastName.equals(person.lastName)) return false;
+        if (!firstname.equals(person.firstname)) return false;
+        if (!lastname.equals(person.lastname)) return false;
         if (!gender.equals(person.gender)) return false;
         if (father != null ? !father.equals(person.father) : person.father != null) return false;
         if (mother != null ? !mother.equals(person.mother) : person.mother != null) return false;
@@ -167,10 +167,10 @@ public class Person extends DataModel {
     }
 
     private void computeHashCode() {
-        int result = descendant.hashCode();
+        int result = username.hashCode();
         result = 31 * result + personID.hashCode();
-        result = 31 * result + firstName.hashCode();
-        result = 31 * result + lastName.hashCode();
+        result = 31 * result + firstname.hashCode();
+        result = 31 * result + lastname.hashCode();
         result = 31 * result + gender.hashCode();
         result = 31 * result + (father != null ? father.hashCode() : 0);
         result = 31 * result + (mother != null ? mother.hashCode() : 0);

@@ -6,6 +6,7 @@ import edu.byu.broderick.fmserver.main.model.User;
 import edu.byu.broderick.fmserver.main.server.result.ErrorResult;
 import edu.byu.broderick.fmserver.main.server.result.Result;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,11 +16,11 @@ import java.util.List;
  */
 public class LoadRequest extends Request {
 
-    List<User> users;
+    private List<Request.RUser> users;
 
-    List<Person> persons;
+    private List<Request.RPerson> persons;
 
-    List<Event> events;
+    private List<Request.REvent> events;
 
 
     /**
@@ -46,14 +47,27 @@ public class LoadRequest extends Request {
 
 
     public List<User> getUsers() {
-        return users;
+        List<User> new_users = new ArrayList<>();
+        for (Request.RUser u : this.users) {
+            new_users.add(u.getUser());
+        }
+        return new_users;
     }
 
     public List<Event> getEvents() {
-        return events;
+        List<Event> new_events = new ArrayList<>();
+        for (Request.REvent e : events) {
+            new_events.add(e.getEvent());
+        }
+        return new_events;
     }
 
     public List<Person> getPersons() {
-        return persons;
+        List<Person> new_persons = new ArrayList<>();
+        for(Request.RPerson p : persons){
+            new_persons.add(p.getPerson());
+        }
+        return new_persons;
     }
+
 }

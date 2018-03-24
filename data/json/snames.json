@@ -1,10 +1,8 @@
-{
-  "data": [
+{"data": [
     "Torgeson",
     "Maston",
     "Lisenby",
     "Ocheltree",
-    "Seeger",
     "Cadden",
     "Garden",
     "Delcastillo",
@@ -62,6 +60,8 @@
     "Paxton",
     "Klocke",
     "Nicola",
+    "Lazaro",
+    "Seeger",
     "Northington",
     "Nibert",
     "Coachman",
@@ -151,5 +151,4 @@
     "Pleasant",
     "Loss",
     "Mitten"
-  ]
-}
+]}
