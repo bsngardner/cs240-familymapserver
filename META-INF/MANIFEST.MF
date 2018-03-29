@@ -1,5 +1,0 @@
-Manifest-Version: 1.0
-Class-Path: lib/gson-2.8.2.jar lib/sqlite-jdbc-3.21.0.1.jar lib/httpcl
- ient-4.5.5.jar
-Main-Class: edu.byu.broderick.fmserver.main.Main
-

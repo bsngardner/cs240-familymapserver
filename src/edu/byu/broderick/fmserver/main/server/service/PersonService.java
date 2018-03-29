@@ -34,36 +34,41 @@ public class PersonService {
     public Result service(PersonRequest request) {
 
         Result result;
-        Database db = Database.getDB();
+        Database db = Database.openDatabase();
+        db.startTransaction();
         System.out.println("COMMAND: persons");
 
         if ((result = request.checkRequest()) != null) {
             System.out.println("Command failed due to bad request");
+            db.endTransaction(false);
             return result;
         }
 
-        User user = Database.getDB().userData.loadUserFromAuthKey(request.getAuthKey());
+        User user = db.userData.loadUserFromAuthKey(request.getAuthKey());
         if (user == null) {
             result = new ErrorResult("Invalid Auth Token");
             System.out.println("Command failed due to invalid auth token");
+            db.endTransaction(false);
             return result;
         }
 
         String personid = request.getPersonid();
         if (personid == null) {
-            List<Person> persons = Database.getDB().personData.loadUserPersons(user);
+            List<Person> persons = db.personData.loadUserPersons(user);
             result = new PersonResult.AllPersons(persons);
         } else {
-            Person person = Database.getDB().personData.loadPerson(user, personid);
+            Person person = db.personData.loadPerson(user, personid);
             if (person == null) {
                 result = new ErrorResult("Person not found");
                 System.out.println("Person not found");
+                db.endTransaction(false);
                 return result;
             }
             result = new PersonResult.SinglePerson(person);
         }
 
         System.out.println("Command successful");
+        db.endTransaction(true);
         return result;
     }
 }

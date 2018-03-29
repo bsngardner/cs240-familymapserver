@@ -50,19 +50,22 @@ public class EventDAOTest {
 
     @Before
     public void setUp() throws Exception {
-        db = Database.getDB();
+        db = Database.openDatabase();
+        db.startTransaction();
         db.resetDatabase();
+        db.endTransaction(true);
     }
 
     @After
     public void tearDown() throws Exception {
+        db.startTransaction();
         db.resetDatabase();
+        db.endTransaction(true);
     }
 
     @Test
     public void storeNewEvent() throws Exception {
 
-        db.resetDatabase();
         db.userData.storeUser(user1);
         db.eventData.storeNewEvent(new Event(eventA1));
         List<Event> events = db.eventData.loadUserEvents(user1);
@@ -72,7 +75,6 @@ public class EventDAOTest {
 
     @Test
     public void storeEvent() throws Exception {
-        db.resetDatabase();
         db.userData.storeUser(user1);
         db.eventData.storeEvent(eventA1);
         List<Event> events = db.eventData.loadUserEvents(user1);
@@ -81,8 +83,8 @@ public class EventDAOTest {
     }
 
     public void fillDatabase() throws SQLException {
-        db.resetDatabase();
 
+        db.startTransaction();
         db.userData.storeUser(user1);
         db.userData.storeUser(user2);
 
@@ -95,16 +97,19 @@ public class EventDAOTest {
         db.eventData.storeEvent(eventA2);
         db.eventData.storeEvent(eventB1);
         db.eventData.storeEvent(eventB2);
+        db.endTransaction(true);
     }
 
     @Test
     public void loadUserEvents() throws Exception {
         fillDatabase();
+        db.startTransaction();
         Set<Event> events = new HashSet<>(db.eventData.loadUserEvents(user1));
         assertTrue(events.contains(eventA1));
         assertTrue(events.contains(eventA1));
         assertFalse(events.contains(eventB1));
         assertFalse(events.contains(eventB2));
+        db.endTransaction(true);
     }
 
     @Test
@@ -120,31 +125,39 @@ public class EventDAOTest {
     @Test
     public void loadEvent() throws Exception {
         fillDatabase();
+        db.startTransaction();
         Event e = db.eventData.loadEvent(user1, "eA1");
         assertTrue(eventA1.equals(e));
         assertFalse(e.equals(eventA2));
         assertFalse(e.equals(eventB1));
         assertFalse(e.equals(eventB2));
+        db.endTransaction(true);
     }
 
     @Test
     public void deleteUserEvents() throws Exception {
         fillDatabase();
+        db.startTransaction();
         db.eventData.deleteUserEvents(user2);
         Set<Event> events = new HashSet<>(db.eventData.loadUserEvents(user2));
         assertTrue(events.size() == 0);
         events = new HashSet<>(db.eventData.loadUserEvents(user1));
         assertTrue(events.size() == 2);
+        db.endTransaction(true);
     }
 
     @Test
     public void deleteEvents() throws Exception {
         fillDatabase();
+        db.startTransaction();
         db.eventData.deleteEvents();
+        db.endTransaction(true);
+        db.startTransaction();
         Set<Event> events = new HashSet<>(db.eventData.loadUserEvents(user2));
         assertTrue(events.size() == 0);
         events = new HashSet<>(db.eventData.loadUserEvents(user1));
         assertTrue(events.size() == 0);
+        db.endTransaction(true);
     }
 
 }

@@ -31,11 +31,12 @@ public class RegisterService {
     public Result service(RegisterRequest request) {
 
         Result result;
-        Database db = Database.getDB();
+        Database db = Database.openDatabase();
         System.out.println("COMMAND: register");
 
         if ((result = request.checkRequest()) != null) {
             System.out.println("Command failed due to bad request");
+            db.endTransaction(false);
             return result;
         }
 
@@ -51,14 +52,16 @@ public class RegisterService {
         if (user_check != null) {
             result = new ErrorResult("Username unavailable");
             System.out.println("Command failed due to username unavailable");
+            db.endTransaction(false);
             return result;
         }
         db.userData.storeUser(user);
         User.AuthToken key = db.userData.authenticateUser(user);
-        Services.fillService.fillUser(user, 4);
+        Services.fillService.fillUser(db, user, 4);
 
         result = new RegisterResult(key.key(), user.getUsername(), user.getPersonID());
         System.out.println("Command successful");
+        db.endTransaction(true);
         return result;
     }
 }

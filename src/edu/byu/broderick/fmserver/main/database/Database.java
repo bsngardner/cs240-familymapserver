@@ -61,7 +61,7 @@ public class Database {
             "          year TEXT NOT NULL\n" +
             "                   );";
     private final String DROP_EVENTS_TABLE = "DROP TABLE IF EXISTS main.events";
-    public Connection conn;
+    private Connection conn;
 
     public UserDAO userData = new UserDAO(this);
     public EventDAO eventData = new EventDAO(this);
@@ -76,15 +76,23 @@ public class Database {
      */
     public Database() {
         loadDriver();
-    }
+        final String dbName = "database.sqlite";
+        final String dbPath = "db" + File.separator + dbName;
+        final String connectionPath = "jdbc:sqlite:" + dbPath;
 
-    /**
-     * Getter for singleton object
-     *
-     * @return
-     */
-    public static Database getDB() {
-        return db;
+        File dir = new File("db");
+        conn = null;
+
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        try {
+            conn = DriverManager.getConnection(connectionPath);
+            createDatabaseINE();
+        } catch (SQLException e) {
+            System.out.println("SQL database access error: " + e.getMessage());
+        }
     }
 
     /**
@@ -101,11 +109,19 @@ public class Database {
         }
     }
 
+
+    /**
+     * Open connection to database
+     * Called by startTransaction
+     */
+    public static Database openDatabase() {
+        return new Database();
+    }
+
     /**
      * Called by all database transaction methods, begins database transaction
      */
-    private void startTransaction() {
-        openDatabase();
+    public void startTransaction() {
         try {
             conn.setAutoCommit(false);
         } catch (SQLException e) {
@@ -120,7 +136,7 @@ public class Database {
      *
      * @param commit
      */
-    private void endTransaction(boolean commit) {
+    public void endTransaction(boolean commit) {
         try {
             if (conn == null)
                 throw new Exception("SQL: endTransaction called on null connection");
@@ -138,8 +154,6 @@ public class Database {
             closeSQLStatement();
         }
 
-        conn = null;
-
     }
 
     /**
@@ -153,7 +167,7 @@ public class Database {
      */
     public List<List<Object>> select(String table, List<String> columnList, String column, String value) {
 
-        startTransaction();
+//        startTransaction();
 
         String columns = "*";
         if (columnList != null)
@@ -179,11 +193,11 @@ public class Database {
                 rows.add(row);
             }
 
-            endTransaction(true);
+//            endTransaction(true);
         } catch (SQLException e) {
             System.out.println("SQL error: select");
             e.printStackTrace();
-            endTransaction(false);
+//            endTransaction(false);
         } finally {
             closeSQLStatement();
         }
@@ -203,7 +217,7 @@ public class Database {
      */
     public boolean update(String table, List<String> columns, List<Object> entries, String column, String value) {
 
-        startTransaction();
+//        startTransaction();
 
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE " + table + " SET ");
@@ -231,11 +245,11 @@ public class Database {
             stmt.executeUpdate();
             success = true;
 
-            endTransaction(true);
+//            endTransaction(true);
         } catch (SQLException e) {
             System.out.println("SQL error: update");
             e.printStackTrace();
-            endTransaction(false);
+//            endTransaction(false);
         } finally {
             closeSQLStatement();
         }
@@ -253,7 +267,7 @@ public class Database {
      */
     public boolean delete(String table, String attribute, String value) {
 
-        startTransaction();
+//        startTransaction();
 
         sql_cmd = "DELETE FROM " + table;
         if (attribute != null)
@@ -271,7 +285,7 @@ public class Database {
         } catch (SQLException e) {
             System.out.println("SQL error: delete");
             e.printStackTrace();
-            endTransaction(false);
+//            endTransaction(false);
         } finally {
             closeSQLStatement();
         }
@@ -314,7 +328,7 @@ public class Database {
         } catch (SQLException e) {
             System.out.println("SQL error: insert");
             e.printStackTrace();
-            endTransaction(false);
+//            endTransaction(false);
         } finally {
             closeSQLStatement();
         }
@@ -341,29 +355,6 @@ public class Database {
         }
     }
 
-    /**
-     * Open connection to database
-     * Called by startTransaction
-     */
-    public void openDatabase() {
-        final String dbName = "database.sqlite";
-        final String dbPath = "db" + File.separator + dbName;
-        final String connectionPath = "jdbc:sqlite:" + dbPath;
-
-        File dir = new File("db");
-        conn = null;
-
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-
-        try {
-            conn = DriverManager.getConnection(connectionPath);
-            createDatabaseINE();
-        } catch (SQLException e) {
-            System.out.println("SQL database access error: " + e.getMessage());
-        }
-    }
 
     /**
      * Create database tables if they does not exist.

@@ -85,12 +85,14 @@ public class FillService {
      */
     public Result service(FillRequest request) {
         Result result;
-        Database db = Database.getDB();
+        Database db = Database.openDatabase();
+        db.startTransaction();
 
         System.out.println("COMMAND: fill");
 
         if ((result = request.checkRequest()) != null) {
             System.out.println("Command failed due to bad request");
+            db.endTransaction(false);
             return result;
         }
 
@@ -98,6 +100,7 @@ public class FillService {
         if (user == null) {
             result = new ErrorResult("Specified username does not exist");
             System.out.println("Command failed due to specified username does not exist");
+            db.endTransaction(false);
             return result;
         }
 
@@ -105,20 +108,21 @@ public class FillService {
         if ((gens = request.getGenerations()) < 1) {
             result = new ErrorResult("Invalid generations parameter");
             System.out.println("Command failed due to invalid generations parameter");
+            db.endTransaction(false);
             return result;
         }
 
         db.eventData.deleteUserEvents(user);
         db.personData.deleteUserPersons(user);
 
-        fillUser(user, gens);
+        fillUser(db, user, gens);
 
         int numPersons = db.personData.loadUserPersons(user).size();
         int numEvents = db.eventData.loadUserEvents(user).size();
         result = new FillResult(numPersons, numEvents);
 
         System.out.println("Command successful");
-
+        db.endTransaction(true);
         return result;
     }
 
@@ -128,7 +132,7 @@ public class FillService {
      * @param user
      * @param generations
      */
-    public void fillUser(User user, int generations) {
+    public void fillUser(Database db, User user, int generations) {
 
         String username = user.getUsername();
         String firstname = user.getFirstname();
@@ -136,14 +140,14 @@ public class FillService {
         String gender = user.getGender();
 
         Person person = new Person(username, firstname, lastname, gender, null, null, null);
-        Database.getDB().personData.storeNewPerson(person);
+        db.personData.storeNewPerson(person);
 
         user.setPersonID(person.getPersonID());
-        Database.getDB().userData.updateUser(user);
+        db.userData.updateUser(user);
 
         int birthYearBase = rand.nextInt(50) + 1950;
-        fillEvents(person, birthYearBase);
-        fillTree(username, person, generations, birthYearBase - 20);
+        fillEvents(db, person, birthYearBase);
+        fillTree(db, username, person, generations, birthYearBase - 20);
     }
 
     /**
@@ -154,27 +158,27 @@ public class FillService {
      * @param gens
      * @param birthYearBase
      */
-    private void fillTree(String username, Person child, int gens, int birthYearBase) {
+    private void fillTree(Database db, String username, Person child, int gens, int birthYearBase) {
         if (gens == 0)
             return;
 
-        Person father = createPerson(username, child);
+        Person father = createPerson(db, username, child);
         child.setFather(father.getPersonID());
 
-        Person mother = createPerson(username, child);
+        Person mother = createPerson(db, username, child);
         child.setMother(mother.getPersonID());
 
-        fillEvents(father, birthYearBase);   //Order important! father spouse must be null for fillEvents or multiple marriage events are made
+        fillEvents(db, father, birthYearBase);   //Order important! father spouse must be null for fillEvents or multiple marriage events are made
         father.setSpouse(mother.getPersonID());
         mother.setSpouse(father.getPersonID());
-        fillEvents(mother, birthYearBase);
+        fillEvents(db, mother, birthYearBase);
 
-        Database.getDB().personData.updatePerson(child);
-        Database.getDB().personData.updatePerson(father);
-        Database.getDB().personData.updatePerson(mother);
+        db.personData.updatePerson(child);
+        db.personData.updatePerson(father);
+        db.personData.updatePerson(mother);
 
-        fillTree(username, father, gens - 1, birthYearBase - 20);
-        fillTree(username, mother, gens - 1, birthYearBase - 20);
+        fillTree(db, username, father, gens - 1, birthYearBase - 20);
+        fillTree(db, username, mother, gens - 1, birthYearBase - 20);
     }
 
     /**
@@ -184,7 +188,7 @@ public class FillService {
      * @param child
      * @return
      */
-    private Person createPerson(String username, Person child) {
+    private Person createPerson(Database db, String username, Person child) {
         String gender;
         String firstname;
         String lastname;
@@ -200,7 +204,7 @@ public class FillService {
             return null;
 
         Person person = new Person(username, firstname, lastname, gender, null, null, null);
-        Database.getDB().personData.storeNewPerson(person);
+        db.personData.storeNewPerson(person);
         return person;
     }
 
@@ -211,7 +215,7 @@ public class FillService {
      * @param person
      * @param birthYearBase
      */
-    private void fillEvents(Person person, int birthYearBase) {
+    private void fillEvents(Database db, Person person, int birthYearBase) {
         String username = person.getUsername();
         String personid = person.getPersonID();
 
@@ -263,7 +267,7 @@ public class FillService {
         LocationData loc = locs.get(r);
         locs.remove(loc);
 
-        makeEvent(username, personid, loc, "birth", birthyear);
+        makeEvent(db, username, personid, loc, "birth", birthyear);
 
         if (deathyear > 0) {
             if (locs.size() <= 0)
@@ -271,7 +275,7 @@ public class FillService {
             r = rand.nextInt(locs.size());
             loc = locs.get(r);
             locs.remove(loc);
-            makeEvent(username, personid, loc, "death", deathyear);
+            makeEvent(db, username, personid, loc, "death", deathyear);
         }
         if (marriageyear > 0) {
             if (locs.size() <= 0)
@@ -279,8 +283,8 @@ public class FillService {
             r = rand.nextInt(locs.size());
             loc = locs.get(r);
             locs.remove(loc);
-            makeEvent(username, personid, loc, "marriage", marriageyear);
-            makeEvent(username, person.getSpouse(), loc, "marriage", marriageyear);
+            makeEvent(db, username, personid, loc, "marriage", marriageyear);
+            makeEvent(db, username, person.getSpouse(), loc, "marriage", marriageyear);
         }
         if (graduateyear > 0) {
             if (locs.size() <= 0)
@@ -288,7 +292,7 @@ public class FillService {
             r = rand.nextInt(locs.size());
             loc = locs.get(r);
             locs.remove(loc);
-            makeEvent(username, personid, loc, "graduation", graduateyear);
+            makeEvent(db, username, personid, loc, "graduation", graduateyear);
         }
         if (boughthouseyear > 0) {
             if (locs.size() <= 0)
@@ -296,7 +300,7 @@ public class FillService {
             r = rand.nextInt(locs.size());
             loc = locs.get(r);
             locs.remove(loc);
-            makeEvent(username, personid, loc, "boughtHouse", boughthouseyear);
+            makeEvent(db, username, personid, loc, "boughtHouse", boughthouseyear);
         }
         if (majorsurgeryyear > 0) {
             if (locs.size() <= 0)
@@ -304,7 +308,7 @@ public class FillService {
             r = rand.nextInt(locs.size());
             loc = locs.get(r);
             locs.remove(loc);
-            makeEvent(username, personid, loc, "majorSurgery", majorsurgeryyear);
+            makeEvent(db, username, personid, loc, "majorSurgery", majorsurgeryyear);
         }
         if (lifecrisisyear > 0) {
             if (locs.size() <= 0)
@@ -312,7 +316,7 @@ public class FillService {
             r = rand.nextInt(locs.size());
             loc = locs.get(r);
             locs.remove(loc);
-            makeEvent(username, personid, loc, "lifeCrisis", lifecrisisyear);
+            makeEvent(db, username, personid, loc, "lifeCrisis", lifecrisisyear);
         }
         if (ridebikeyear > 0) {
             if (locs.size() <= 0)
@@ -320,7 +324,7 @@ public class FillService {
             r = rand.nextInt(locs.size());
             loc = locs.get(r);
             locs.remove(loc);
-            makeEvent(username, personid, loc, "rideBike", ridebikeyear);
+            makeEvent(db, username, personid, loc, "rideBike", ridebikeyear);
         }
 
     }
@@ -334,9 +338,9 @@ public class FillService {
      * @param eventType
      * @param year
      */
-    private void makeEvent(String username, String personid, LocationData loc, String eventType, int year) {
+    private void makeEvent(Database db, String username, String personid, LocationData loc, String eventType, int year) {
         Event event = new Event(username, personid, Double.parseDouble(loc.latitude), Double.parseDouble(loc.longitude), loc.country, loc.city, eventType, Integer.toString(year));
-        Database.getDB().eventData.storeNewEvent(event);
+        db.eventData.storeNewEvent(event);
     }
 
     /**

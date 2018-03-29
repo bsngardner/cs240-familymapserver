@@ -32,7 +32,8 @@ public class EventService {
      */
     public Result service(EventRequest request) {
         Result result;
-        Database db = Database.getDB();
+        Database db = Database.openDatabase();
+        boolean success = true;
         System.out.println("COMMAND: event");
 
         if ((result = request.checkRequest()) != null) {
@@ -41,10 +42,13 @@ public class EventService {
         }
 
         String authKey = request.getAuthKey();
+
+        db.startTransaction();
         User user = db.userData.loadUserFromAuthKey(authKey);
         if (user == null) {
             result = new ErrorResult("Invalid Auth token");
             System.out.println("Command failed due to invalid auth token");
+            db.endTransaction(false);
             return result;
         }
         String eventid;
@@ -53,6 +57,7 @@ public class EventService {
             if (event == null) {
                 result = new ErrorResult("Invalid event id parameter");
                 System.out.println("Command failed due to invalid event id parameter");
+                success = false;
             } else {
                 result = EventResult.createSingleEvent(event);
                 System.out.println("Command successful");
@@ -62,6 +67,7 @@ public class EventService {
             result = EventResult.createAllEvents(events);
             System.out.println("Command successful");
         }
+        db.endTransaction(success);
 
         return result;
     }

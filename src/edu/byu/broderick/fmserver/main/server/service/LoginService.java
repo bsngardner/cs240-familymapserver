@@ -32,11 +32,13 @@ public class LoginService {
     public Result login(LoginRequest request) {
 
         Result result;
-        Database db = Database.getDB();
         System.out.println("COMMAND: login");
+        Database db = Database.openDatabase();
+        db.startTransaction();
 
         if ((result = request.checkRequest()) != null) {
             System.out.println("Command failed due to bad request");
+            db.endTransaction(false);
             return result;
         }
 
@@ -46,14 +48,17 @@ public class LoginService {
         User user = db.userData.loadUser(username);
         if (user == null) {
             result = new ErrorResult("Invalid username or password");
+            db.endTransaction(false);
             return result;
         }
 
         if (password.equals(user.getPassword())) {
-            String key = Database.getDB().userData.authenticateUser(user).key();
+            String key = db.userData.authenticateUser(user).key();
             result = new LoginResult(key, user.getUsername(), user.getPersonID());
+            db.endTransaction(true);
         } else {
             result = new ErrorResult("Invalid username or password");
+            db.endTransaction(false);
         }
 
         return result;

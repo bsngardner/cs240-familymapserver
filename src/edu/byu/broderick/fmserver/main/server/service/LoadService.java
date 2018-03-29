@@ -8,6 +8,7 @@ import edu.byu.broderick.fmserver.main.server.request.LoadRequest;
 import edu.byu.broderick.fmserver.main.server.result.LoadResult;
 import edu.byu.broderick.fmserver.main.server.result.Result;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 /**
@@ -34,11 +35,14 @@ public class LoadService {
     public Result service(LoadRequest request) {
 
         Result result;
-        Database db = Database.getDB();
         System.out.println("COMMAND: load");
+
+        Database db = Database.openDatabase();
+        db.startTransaction();
 
         if ((result = request.checkRequest()) != null) {
             System.out.println("Command failed due to bad request");
+            db.endTransaction(false);
             return result;
         }
 
@@ -66,6 +70,8 @@ public class LoadService {
         result = new LoadResult(users.size(), persons.size(), events.size());
 
         System.out.println("Command successful");
+
+        db.endTransaction(true);
 
         return result;
     }

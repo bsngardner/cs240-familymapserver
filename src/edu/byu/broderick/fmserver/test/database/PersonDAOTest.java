@@ -51,37 +51,43 @@ public class PersonDAOTest {
 
     @Before
     public void setUp() throws Exception {
-        db = Database.getDB();
+        db = Database.openDatabase();
+        db.startTransaction();
         db.resetDatabase();
+        db.endTransaction(true);
     }
 
     @After
     public void tearDown() throws Exception {
+        db.startTransaction();
         db.resetDatabase();
+        db.endTransaction(true);
     }
 
     @Test
     public void storeNewPerson() throws Exception {
-        db.resetDatabase();
+        db.startTransaction();
         db.userData.storeUser(user1);
         db.personData.storeNewPerson(new Person(personA));
         List<Person> persons = db.personData.loadUserPersons(user1);
         Person loaded_person = persons.get(0);
         assertFalse(personA.getPersonID().equals(loaded_person.getPersonID()));
+        db.endTransaction(true);
     }
 
     @Test
     public void storePerson() throws Exception {
-        db.resetDatabase();
+        db.startTransaction();
         db.userData.storeUser(user1);
         db.personData.storePerson(personA);
         List<Person> persons = db.personData.loadUserPersons(user1);
         Person loaded_person = persons.get(0);
         assertTrue(personA.equals(loaded_person));
+        db.endTransaction(true);
     }
 
     public void fillDatabase() throws SQLException {
-        db.resetDatabase();
+        db.startTransaction();
 
         db.userData.storeUser(user1);
         db.userData.storeUser(user2);
@@ -95,57 +101,67 @@ public class PersonDAOTest {
         db.eventData.storeEvent(eventA2);
         db.eventData.storeEvent(eventB1);
         db.eventData.storeEvent(eventB2);
+        db.endTransaction(true);
     }
 
     @Test
     public void loadUserPersons() throws Exception {
         fillDatabase();
+        db.startTransaction();
         Set<Person> persons = new HashSet<>(db.personData.loadUserPersons(user1));
         assertTrue(persons.contains(personA));
         assertFalse(persons.contains(personB));
         assertTrue(persons.contains(personC));
         assertFalse(persons.contains(personD));
-
+        db.endTransaction(true);
     }
 
     @Test
     public void loadPerson() throws Exception {
         fillDatabase();
+        db.startTransaction();
         Person person = db.personData.loadPerson(user1, "idA");
         assertTrue(person.equals(personA));
         assertFalse(person.equals(personB));
         assertFalse(person.equals(personC));
         assertFalse(person.equals(personD));
+        db.endTransaction(true);
     }
 
     @Test
     public void updatePerson() throws Exception {
         fillDatabase();
+        db.startTransaction();
         Person p = new Person(personA);
         p.setFirstname("jelly");
         db.personData.updatePerson(p);
         p = db.personData.loadPerson(user1, personA.getPersonID());
         assertTrue(p.getFirstname().equals("jelly"));
+        db.endTransaction(true);
     }
 
     @Test
     public void deleteUserPersons() throws Exception {
         fillDatabase();
+        db.startTransaction();
         db.personData.deleteUserPersons(user2);
         Set<Person> persons = new HashSet<>(db.personData.loadUserPersons(user1));
         assertFalse(persons.size() == 0);
         persons = new HashSet<>(db.personData.loadUserPersons(user2));
         assertTrue(persons.size() == 0);
+        db.endTransaction(true);
     }
 
     @Test
     public void deletePersons() throws Exception {
         fillDatabase();
+        db.startTransaction();
         db.personData.deletePersons();
         Set<Person> persons = new HashSet<>(db.personData.loadUserPersons(user1));
         assertTrue(persons.size() == 0);
         persons = new HashSet<>(db.personData.loadUserPersons(user2));
         assertTrue(persons.size() == 0);
+        db.endTransaction(true);
     }
 
 }

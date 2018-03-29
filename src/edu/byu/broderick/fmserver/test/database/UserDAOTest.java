@@ -46,52 +46,66 @@ public class UserDAOTest {
 
     @Before
     public void setUp() throws Exception {
-        db = Database.getDB();
+        db = Database.openDatabase();
+        db.startTransaction();
         db.resetDatabase();
+        db.endTransaction(true);
     }
 
     @After
     public void tearDown() throws Exception {
+        db.startTransaction();
         db.resetDatabase();
+        db.endTransaction(true);
     }
 
     @Test
     public void storeUser() throws Exception {
+        db.startTransaction();
         db.userData.storeUser(user1);
         assertTrue(db.userData.loadUser(user1.getUsername()).equals(user1));
+        db.endTransaction(true);
     }
 
     @Test
     public void authenticateUser() throws Exception {
         fillDatabase();
+        db.startTransaction();
         User.AuthToken key = db.userData.authenticateUser(user1);
         User user = db.userData.loadUserFromAuthKey(key.key());
         assertTrue(user1.equals(user));
+        db.endTransaction(true);
     }
 
     @Test
     public void loadUserFromAuthKey() throws Exception {
         fillDatabase();
+        db.startTransaction();
         User.AuthToken key = db.userData.authenticateUser(user1);
         User user = db.userData.loadUserFromAuthKey(key.key());
         assertTrue(user1.equals(user));
+        db.endTransaction(true);
     }
 
     @Test
     public void loadUser() throws Exception {
         fillDatabase();
+        db.startTransaction();
         User user = db.userData.loadUser(user1.getUsername());
         assertTrue(user1.equals(user));
+        db.endTransaction(true);
     }
 
     @Test
     public void updateUser() throws Exception {
         fillDatabase();
+        db.startTransaction();
         User user = new User(user1);
         user.setInfo("Quick brown fox");
         db.userData.updateUser(user);
         user = db.userData.loadUser(user.getUsername());
         assertTrue(user.getInfo().equals("Quick brown fox"));
+        db.endTransaction(true);
     }
 
     @Test
@@ -105,8 +119,7 @@ public class UserDAOTest {
     }
 
     public void fillDatabase() throws SQLException {
-        db.resetDatabase();
-
+        db.startTransaction();
         db.userData.storeUser(user1);
         db.userData.storeUser(user2);
 
@@ -119,6 +132,7 @@ public class UserDAOTest {
         db.eventData.storeEvent(eventA2);
         db.eventData.storeEvent(eventB1);
         db.eventData.storeEvent(eventB2);
+        db.endTransaction(true);
     }
 
 }

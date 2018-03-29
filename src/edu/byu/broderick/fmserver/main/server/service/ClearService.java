@@ -6,6 +6,7 @@ import edu.byu.broderick.fmserver.main.server.result.ClearResult;
 import edu.byu.broderick.fmserver.main.server.result.ErrorResult;
 import edu.byu.broderick.fmserver.main.server.result.Result;
 
+import javax.xml.crypto.Data;
 import java.sql.SQLException;
 
 /**
@@ -31,14 +32,20 @@ public class ClearService {
     public Result service(ClearRequest request) {
         Result result;
         System.out.println("COMMAND: clear");
+        Database db = Database.openDatabase();
+        boolean success = true;
         try {
-            Database.getDB().resetDatabase();
+            db.startTransaction();
+            db.resetDatabase();
             result = new ClearResult();
             System.out.println("Succesfully cleared database");
         } catch (SQLException e) {
+            success = false;
             e.printStackTrace();
             result = new ErrorResult("Internal server error");
             System.out.println("Failed: SQL exception");
+        }finally{
+            db.endTransaction(success);
         }
 
         return result;
